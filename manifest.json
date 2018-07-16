@@ -1,0 +1,23 @@
+{
+
+    "manifest_version": 2,
+    "name": "AInspector",
+    "description": "add this later",
+    "version": "0.1",
+  
+    "sidebar_action": {
+      "default_icon": "icons/star.png",
+      "default_title" : "Inspector",
+      "default_panel": "sidebar/panel.html"
+    },
+  
+    "permissions": ["storage", "tabs"]
+
+    // "content_scripts": [
+    //     {
+    //       "matches": ["*"],
+    //       "js": ["evaluation/main.js", "evaluation/oaa_a11y_evaluation.js", "evaluation/oaa_a11y_rules.js", "evaluation/oaa_a11y_rulesets.js"]
+    //     }
+    // ]
+  
+} 
