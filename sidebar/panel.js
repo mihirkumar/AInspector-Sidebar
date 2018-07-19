@@ -1,21 +1,39 @@
+"use strict";
+
 var evaluateButton = document.getElementById('evaluate');
 
-function evaluateRules() {
-    console.log('Entered evaluateRules()');
-    var doc = window.document;
-    var ruleset = OpenAjax.a11y.RulesetManager.getRuleset(passedRuleset);
-    var evaluator_factory = OpenAjax.a11y.EvaluatorFactory.newInstance();
-    evaluator_factory.setParameter('ruleset', ruleset);
-    evaluator_factory.setFeature('eventProcessing', 'fae-util');
-    evaluator_factory.setFeature('groups', 7);
-    var evaluator = evaluator_factory.newEvaluator();
-    var evaluation = evaluator.evaluate(doc, doc.title, doc.location.href);
-    var out = evaluation.toJSON(true);
-    console.log(out);
-    return out;
+function onError(error) {
+  console.error(`Error: ${error}`);
 }
 
-evaluateButton.addEventListener("click", browser.tabs.executeScript({
-        
-    })
-);
+function sendMessageToTabs(tabs) {
+  for (let tab of tabs) {
+    browser.tabs.sendMessage(
+      tab.id,
+      {clicked: true}
+    ).then(response => {
+      console.log("Message from the content script:");
+      alert(response.response);
+    }).catch(onError);
+  }
+}
+
+evaluateButton.addEventListener("click", function(){
+    browser.tabs.query({
+        currentWindow: true,
+        active: true
+    }).then(sendMessageToTabs).catch(onError);
+});
+
+
+
+
+// function executing(){
+//     // console.log('we are in');
+//     alert('im in dud');
+    
+//     // browser.tabs.executeScript({code: 'alert("button was pressed my dude!")'});
+//     // console.log('heya!');
+// }
+
+// evaluateButton.addEventListener("click", executing);

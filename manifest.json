@@ -11,13 +11,13 @@
       "default_panel": "sidebar/panel.html"
     },
   
-    "permissions": ["storage", "tabs"]
+    "permissions": ["storage", "activeTab", "tabs"],
 
-    // "content_scripts": [
-    //     {
-    //       "matches": ["*"],
-    //       "js": ["evaluation/main.js", "evaluation/oaa_a11y_evaluation.js", "evaluation/oaa_a11y_rules.js", "evaluation/oaa_a11y_rulesets.js"]
-    //     }
-    // ]
+    "content_scripts": [
+        {
+          "matches": ["*://*.mozilla.org/*"],
+          "js": ["pageContext.js", "libraries/oaa_a11y_evaluation.js", "libraries/oaa_a11y_rules.js", "libraries/oaa_a11y_rulesets.js"]
+        }
+    ]
   
 } 
