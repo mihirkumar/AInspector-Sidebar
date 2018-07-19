@@ -24,16 +24,3 @@ evaluateButton.addEventListener("click", function(){
         active: true
     }).then(sendMessageToTabs).catch(onError);
 });
-
-
-
-
-// function executing(){
-//     // console.log('we are in');
-//     alert('im in dud');
-    
-//     // browser.tabs.executeScript({code: 'alert("button was pressed my dude!")'});
-//     // console.log('heya!');
-// }
-
-// evaluateButton.addEventListener("click", executing);

@@ -15,7 +15,7 @@
 
     "content_scripts": [
         {
-          "matches": ["*://*.mozilla.org/*"],
+          "matches": ["<all_urls>"],
           "js": ["pageContext.js", "libraries/oaa_a11y_evaluation.js", "libraries/oaa_a11y_rules.js", "libraries/oaa_a11y_rulesets.js"]
         }
     ]
