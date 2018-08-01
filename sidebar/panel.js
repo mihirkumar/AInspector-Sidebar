@@ -2,6 +2,7 @@
 
 var evaluateButton = document.getElementById('evaluate');
 
+
 function onError(error) {
   console.error(`Error: ${error}`);
 }
