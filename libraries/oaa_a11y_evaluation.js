@@ -27512,8 +27512,8 @@ OpenAjax.a11y.EvaluationResult = function (dom, title, url, ruleset, dom_cache) 
   this.date = OpenAjax.a11y.util.getFormattedDate();
 
 //  this.dom       = dom;
+  this.dom       = null;
 
-  this.dom       = dom;
   this.dom_cache = dom_cache;
   this.rule_results = [];
   this.page_information =  new OpenAjax.a11y.info.PageInfo(dom_cache);
