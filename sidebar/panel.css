@@ -1,0 +1,12 @@
+body {
+    margin: 10px;
+}
+
+#elem_results_summary {
+    margin: auto;
+}
+
+#bottom {
+    position: absolute;
+    bottom: 10px;
+}

@@ -1,13 +1,13 @@
 {
 
     "manifest_version": 2,
-    "name": "AInspector",
+    "name": "AInspector Sidebar",
     "description": "add this later",
     "version": "0.1",
   
     "sidebar_action": {
       "default_icon": "icons/star.png",
-      "default_title" : "Inspector",
+      "default_title" : "AInspector Sidebar",
       "default_panel": "sidebar/panel.html"
     },
   
