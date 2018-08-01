@@ -27511,11 +27511,11 @@ OpenAjax.a11y.EvaluationResult = function (dom, title, url, ruleset, dom_cache) 
 
   this.date = OpenAjax.a11y.util.getFormattedDate();
 
-//  this.dom       = dom;
-  this.dom       = null;
-
+  this.dom       = dom;
   this.dom_cache = dom_cache;
+
   this.rule_results = [];
+
   this.page_information =  new OpenAjax.a11y.info.PageInfo(dom_cache);
 
 };
@@ -28833,10 +28833,8 @@ OpenAjax.a11y.ElementResult = function (rule_result, result_value, cache_item, m
 
   this.cache_item    = cache_item;
 
-//  if (cache_item.dom_element && cache_item.dom_element.node) this.dom_node = cache_item.dom_element.node;
-//  else this.dom_node = cache_item.node;
-
-  this.dom_node = null;
+  if (cache_item.dom_element && cache_item.dom_element.node) this.dom_node = cache_item.dom_element.node;
+  else this.dom_node = cache_item.node;
 
 };
 
@@ -34558,6 +34556,7 @@ OpenAjax.a11y.Evaluator = function (r, blt, ep, grps) {
       dom_cache.updateDOMElementCache();
       dom_cache.updateAllCaches();
 
+//      var evaluation_result = new OpenAjax.a11y.EvaluationResult(doc, title, url, ruleset, dom_cache);
       var evaluation_result = new OpenAjax.a11y.EvaluationResult(doc, title, url, ruleset, dom_cache);
 
       OpenAjax.a11y.logger.info("Starting evaluation....");
