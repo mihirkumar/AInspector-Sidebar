@@ -2,6 +2,14 @@
 
 var evaluateButton = document.getElementById('evaluate');
 
+onLoad();
+
+function onLoad() {
+  browser.tabs.query({
+      currentWindow: true,
+      active: true
+  }).then(sendMessageToTabs).catch(onError);
+}
 
 function onError(error) {
   console.error(`Error: ${error}`);
