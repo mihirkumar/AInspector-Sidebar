@@ -2,17 +2,14 @@
 
 var evaluateButton = document.getElementById('evaluate');
 
-onLoad();
-
-function onLoad() {
-  browser.tabs.query({
-      currentWindow: true,
-      active: true
-  }).then(sendMessageToTabs).catch(onError);
-}
-
 function onError(error) {
   console.error(`Error: ${error}`);
+}
+
+browser.runtime.onMessage.addListener(notify);
+
+function notify(message) {
+  changePanelElements(message.messageForPanel);
 }
 
 function changePanelElements(receivedObject) {
@@ -28,9 +25,6 @@ function sendMessageToTabs(tabs) {
     ).then(response => {
       var receivedObject = response.response;
       changePanelElements(receivedObject);
-      // document.getElementById("location").innerHTML = "Location: " + receivedObject.url;
-      // alert(locationElem.innerHTML);
-      // alert(receivedObject.url);
     }).catch(onError);
   }
 }
