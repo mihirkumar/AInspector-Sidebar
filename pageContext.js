@@ -24,8 +24,8 @@ function evaluateRules() {
   evaluator_factory.setFeature('groups', 7);
   var evaluator = evaluator_factory.newEvaluator();
   var evaluation = evaluator.evaluate(doc, doc.title, doc.location.href);
-  // var out = evaluation.toJSON(true);
-  console.log(evaluation.url);
+  var out = evaluation.toJSON(true);
+  console.log(out);
   return evaluation;
 }
 
