@@ -7,14 +7,15 @@
   </head>
 
 <body>
-  <div id = "content"></div>
+  <header>
+    <h1 id="title">Summary</h1>
+    <div class="right">
+      <button id="back">Back</button>
+      <button id="views">Views</button>
+    </div>
+  </header>
 
-  <h2>Summary
-    <button id = "back">Back</button>
-    <button id = "views">Views</button>
-  </h2>
-
-  <table id = "elem_results_summary">
+  <table id="summary_results">
     <tr>
       <th>V</th>
       <th>W</th>
@@ -30,7 +31,7 @@
     </tr>
   </table>
 
-  <table >
+  <table id="summary_grid">
     <thead>
       <tr>
         <th>Category</th>
@@ -44,12 +45,30 @@
     </tbody>
   </table>
 
-  <div id = "bottom">
-    <p id = "ruleset">Ruleset: </p>
-    <p id = "location">Location: </p>
-    <button id = "preferences">Preferences</button>
-    <button id = "evaluate">Rerun evaluation</button>
-  </div>
+  <table id="group_grid">
+    <thead>
+      <tr>
+        <th>Rule</th>
+        <th>V</th>
+        <th>W</th>
+        <th>MC</th>
+        <th>P</th>
+      </tr>
+    </thead>
+    <tbody id="rule_results">
+    </tbody>
+  </table>
+
+  <footer style="width: 96%">
+    <div class="info">Ruleset: <span id="ruleset"></span></div>
+    <div class="info">Location: <span id="location"></span></div>
+    <div>
+      <button id="preferences">Preferences</button>
+      <div class="right">
+        <button id="evaluate">Rerun evaluation</button>
+      </div>
+    </div>
+  </footer>
 
   <script src="panel.js"></script>
 </body>

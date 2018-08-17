@@ -1,12 +1,111 @@
 body {
-    margin: 10px;
+    margin: 0.5em;
 }
 
-#elem_results_summary {
+header h1 {
+  display: inline;
+}
+
+#summary_results {
     margin: auto;
 }
 
-#bottom {
+footer {
     position: absolute;
     bottom: 10px;
 }
+
+footer .info {
+  margin-bottom: 0.5em;
+}
+
+.right {
+  float: right;
+}
+
+button {
+  font-size: 1em;
+  border: 1px solid #888;
+  border-radius: 5px;
+  background-color: #eee;
+  padding: 2px 12px 2px 12px;
+  outline: none;
+}
+
+button:focus {
+  border-width: 2px;
+  padding: 1px 11px 1px 11px;
+  outline: none;
+}
+
+
+table {
+  margin-top: 2.5em;
+}
+
+table#summary_results {
+  border-collapse: separate;
+  border-spacing: 10px;
+}
+
+table#summary_results th,
+table#summary_results td {
+  text-align: center;
+}
+
+table#summary_results #violations {
+  background-color: #FFAEAE;
+}
+
+table#summary_results #warnings {
+  background-color: #FFEC94;
+}
+
+table#summary_results #manual_checks {
+  background-color: #B4D8E7;
+}
+
+table#summary_results #passed {
+  background-color: #B0E57C;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table thead th {
+  text-align: right;
+}
+
+table thead th:first-child {
+  text-align: left;
+  padding-left: 0.5em;
+}
+
+table tbody tr:nth-child(even) {
+  background: #EEE;
+}
+
+table tbody tr:nth-child(odd) {
+  background: #FFF;
+}
+
+table tbody th {
+  padding: 0.25em;
+  text-align: left;
+  padding-left: 0.5em;
+}
+
+table tbody td {
+  padding: 0.25em;
+  text-align: right;
+  width: 3em;
+}
+
+table a,
+table a:focus {
+  font-size: 1em;
+  font-weight: normal;
+  color: black;
+}
+

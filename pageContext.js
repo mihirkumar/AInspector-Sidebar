@@ -115,28 +115,65 @@ function summary(ruleset) {
   return aiResponse;
 }
 
+function addGroupSummaryData(aiResponse, evaluationResult, ruleCategoryId) {
+
+  if (typeof ruleCategoryId !== 'number') ruleCategoryId = OpenAjax.a11y.RULE_CATEGORIES.LANDMARKS;
+
+  console.log('[getSummaryData][Start]');
+  var ruleSummaryResult = evaluationResult.getRuleResultsByCategory(ruleCategoryId).getRuleResultsSummary();
+
+  aiResponse.violations    = ruleSummaryResult.violations;
+  aiResponse.warnings      = ruleSummaryResult.warnings;
+  aiResponse.manual_checks = ruleSummaryResult.manual_checks;
+  aiResponse.passed        = ruleSummaryResult.passed;
+
+  console.log('[getSummaryData][End]');
+}
+
+function group(ruleset) {
+  console.log('[group][Start]');
+  var evaluationResult = evaluateRules(ruleset);
+  var aiResponse = getCommonData(evaluationResult);
+  addGroupSummaryData(aiResponse, evaluationResult);
+  aiResponse.option = 'group'
+
+  console.log('[group][URL]: '     + aiResponse.url);
+  console.log('[group][Ruleset]: ' + aiResponse.ruleset);
+  console.log('[group][End]: '     + aiResponse);
+  return aiResponse;
+}
+
 browser.runtime.onMessage.addListener(request => {
   // to be executed on receiving messages from the panel
 
   var aiResponse;
+  var option  = 'summary';
+  var ruleset = 'ARIA_STRICT';
 
-  if (typeof request.option !== 'string') {
-    request.option = 'summary';
+  if (typeof request.option === 'string') {
+    option = request.option;
   }
 
-  if (typeof request.ruleset !== 'string') {
-    request.ruleset = 'ARIA_STRICT';
+  if (typeof request.ruleset === 'string') {
+    ruleset = request.ruleset;
   }
 
   console.log("[onMessage][start]");
-  console.log('[onMessage][option]: ' + request.option);
-  console.log('[onMessage][ruleset]: ' + request.ruleset);
+  console.log('[onMessage][option]: ' + option);
+  console.log('[onMessage][ruleset]: ' + ruleset);
 
-  switch (request.option) {
+  switch (option) {
     case 'summary':
+      aiResponse = summary(ruleset);
+      break;
+
+    case 'group':
+      aiResponse = group(ruleset);
+      break;
+
     default:
-      aiResponse = summary(request.ruleset);
-    break;
+      aiResponse = summary(ruleset);
+      break;
 
   }
 
