@@ -14,16 +14,46 @@ function notify(message) {
   }
 }
 
-function changePanelElements(receivedObject) {
-  if (receivedObject.option == 'summary') {
-    document.getElementById("location").innerHTML = "Location: " + receivedObject.url;
-    document.getElementById("ruleset").innerHTML = "Ruleset: " + receivedObject.ruleset;
+function changePanelElements(evaluationResult) {
+
+
+  function addGroupResultRow(label, v, w, mc, p) {
+    var html = '<tr>'
+    html += '  <th>' + label + '</th>';
+    html += '  <td>' + v     + '</td>';
+    html += '  <td>' + w     + '</td>';
+    html += '  <td>' + mc    + '</td>';
+    html += '  <td>' + p     + '</td>';
+    html += '</tr>'
+
+    return html;
+  }
+
+
+  if (evaluationResult.option == 'summary') {
+    document.getElementById("location").innerHTML = "Location: " + evaluationResult.url;
+    document.getElementById("ruleset").innerHTML = "Ruleset: " + evaluationResult.ruleset;
 
     // update Rule Summary
-    document.getElementById("violations").innerHTML      = receivedObject.violations;
-    document.getElementById("warnings").innerHTML        = receivedObject.warnings;
-    document.getElementById("manual_checks").innerHTML   = receivedObject.manual_checks;
-    document.getElementById("passed").innerHTML          = receivedObject.passed;
+    document.getElementById("violations").innerHTML      = evaluationResult.violations;
+    document.getElementById("warnings").innerHTML        = evaluationResult.warnings;
+    document.getElementById("manual_checks").innerHTML   = evaluationResult.manual_checks;
+    document.getElementById("passed").innerHTML          = evaluationResult.passed;
+
+    // Update Group Results
+
+    var html = '';
+    var node = document.getElementById("group_results");
+
+
+    for (let i = 0; i < evaluationResult.groupResults.length; i++) {
+      var gr = evaluationResult.groupResults[i];
+
+      html += addGroupResultRow(gr.label, gr.violations, gr.warnings, gr.manual_checks, gr.passed);
+    }
+
+    html += addGroupResultRow('All', evaluationResult.violations, evaluationResult.warnings, evaluationResult.manual_checks, evaluationResult.passed);
+    node.innerHTML = html;
   }
 
 }
@@ -34,8 +64,8 @@ function sendMessageToTabs(tabs) {
       tab.id,
       {clicked: true, option: 'summary'}
     ).then(response => {
-      var receivedObject = response.response;
-      changePanelElements(receivedObject);
+      var evaluationResult = response.response;
+      changePanelElements(evaluationResult);
     }).catch(onError);
   }
 }

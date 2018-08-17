@@ -62,7 +62,41 @@ function addSummaryData(aiResponse, evaluationResult) {
 
 function addRuleCategoryData(aiResponse, evaluationResult) {
   console.log('[addRuleCategoryData][Start]');
-  var landmarkResults = evaluationResult.getRuleResultsByCategory(OpenAjax.a11y.RULE_CATEGORIES.LANDMARKS);
+
+
+  function addItem(ruleCategoryId, label) {
+    console.log('[addRuleCategoryData][addItem]: ' + ruleCategoryId + ' ' + label);
+
+    var summary = evaluationResult.getRuleResultsByCategory(ruleCategoryId).getRuleResultsSummary();
+    console.log('[addRuleCategoryData][addItem][summary]: ' + summary);
+
+    var item = { 'id'             : ruleCategoryId,
+                 'label'          : label,
+                 'violations'     : summary.violations,
+                 'warnings'       : summary.warnings,
+                 'manual_checks'  : summary.manual_checks,
+                 'passed'         : summary.passed,
+                 'not_applicable' : summary.not_applicable
+               };
+
+    aiResponse.groupResults.push(item);
+
+  }
+
+  aiResponse.groupResults = [];
+
+  addItem(OpenAjax.a11y.RULE_CATEGORIES.LANDMARKS, 'Landmarks');
+  addItem(OpenAjax.a11y.RULE_CATEGORIES.HEADINGS, 'Headings');
+  addItem(OpenAjax.a11y.RULE_CATEGORIES.STYLES_READABILITY, 'Styles/Content');
+  addItem(OpenAjax.a11y.RULE_CATEGORIES.IMAGES, 'Images');
+  addItem(OpenAjax.a11y.RULE_CATEGORIES.LINKS, 'Links' );
+  addItem(OpenAjax.a11y.RULE_CATEGORIES.FORMS, 'Forms');
+  addItem(OpenAjax.a11y.RULE_CATEGORIES.TABLES, 'Tables');
+  addItem(OpenAjax.a11y.RULE_CATEGORIES.WIDGETS_SCRIPTS, 'Widgets/Scripts');
+  addItem(OpenAjax.a11y.RULE_CATEGORIES.AUDIO_VIDEO, 'Audio/Video');
+  addItem(OpenAjax.a11y.RULE_CATEGORIES.KEYBOARD_SUPPORT, 'Keyboard');
+  addItem(OpenAjax.a11y.RULE_CATEGORIES.TIMING, 'Timing');
+  addItem(OpenAjax.a11y.RULE_CATEGORIES.SITE_NAVIGATION, 'Site Navigation');
 
   console.log('[addRuleCategoryData][End]');
 }
@@ -72,6 +106,7 @@ function summary(ruleset) {
   var evaluationResult = evaluateRules(ruleset);
   var aiResponse = getCommonData(evaluationResult);
   addSummaryData(aiResponse, evaluationResult);
+  addRuleCategoryData(aiResponse, evaluationResult);
   aiResponse.option = 'summary'
 
   console.log('[summary][URL]: '     + aiResponse.url);
