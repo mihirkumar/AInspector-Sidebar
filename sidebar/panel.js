@@ -12,6 +12,76 @@ function notify(message) {
   }
 }
 
+
+function updateSummaryPanel(evaluationResult) {
+
+  function addGroupResultRow(id, label, v, w, mc, p) {
+    var html = '<tr>'
+    html += '  <th><a href="#" id="' + id + '">' + label + '</a></th>';
+    html += '  <td>' + v     + '</td>';
+    html += '  <td>' + w     + '</td>';
+    html += '  <td>' + mc    + '</td>';
+    html += '  <td>' + p     + '</td>';
+    html += '</tr>'
+
+    return html;
+  }
+
+  // update Rule Summary
+  document.getElementById("violations").innerHTML      = evaluationResult.violations;
+  document.getElementById("warnings").innerHTML        = evaluationResult.warnings;
+  document.getElementById("manual_checks").innerHTML   = evaluationResult.manual_checks;
+  document.getElementById("passed").innerHTML          = evaluationResult.passed;
+
+  // Update Group Results
+
+  var html = '';
+  var node = document.getElementById("group_results");
+
+
+  for (let i = 0; i < evaluationResult.groupResults.length; i++) {
+    var gr = evaluationResult.groupResults[i];
+
+    html += addGroupResultRow(gr.id, gr.label, gr.violations, gr.warnings, gr.manual_checks, gr.passed);
+  }
+
+  html += addGroupResultRow('all', 'All', evaluationResult.violations, evaluationResult.warnings, evaluationResult.manual_checks, evaluationResult.passed);
+  node.innerHTML = html;
+
+  var buttons = node.getElementsByTagName('a');
+
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', handleGroupButton);
+  }
+}
+
+function updateGroupPanel(evaluationResult) {
+
+  function addRuleResultRow(id, label, req, v, w, mc, p, h) {
+
+
+  }
+
+  // update Rule Summary
+  document.getElementById("violations").innerHTML      = evaluationResult.violations;
+  document.getElementById("warnings").innerHTML        = evaluationResult.warnings;
+  document.getElementById("manual_checks").innerHTML   = evaluationResult.manual_checks;
+  document.getElementById("passed").innerHTML          = evaluationResult.passed;
+
+  // Update Group Results
+
+  var html = '';
+  var node = document.getElementById("group_results");
+
+
+  for (let i = 0; i < evaluationResult.ruleResults.length; i++) {
+    var rr = evaluationResult.ruleResults[i];
+
+    html += addRuleResultRow(rr.id, rr.label, rr.required, rr.violations, rr.warnings, rr.manual_checks, rr.passed, rr.hidden);
+  }
+
+}
+
 function changePanelElements(evaluationResult) {
 
   function hide(id) {
@@ -30,17 +100,12 @@ function changePanelElements(evaluationResult) {
     }
   }
 
-  function addGroupResultRow(id, label, v, w, mc, p) {
-    var html = '<tr>'
-    html += '  <th><a href="#" id="' + id + '">' + label + '</a></th>';
-//    html += '  <th>' + label + '</th>';
-    html += '  <td>' + v     + '</td>';
-    html += '  <td>' + w     + '</td>';
-    html += '  <td>' + mc    + '</td>';
-    html += '  <td>' + p     + '</td>';
-    html += '</tr>'
+  function updateTitle(title) {
+    var node = document.getElementById('title');
 
-    return html;
+    if (node) {
+      node.innerHTML = title;
+    }
   }
 
   // Hide all view options
@@ -51,67 +116,21 @@ function changePanelElements(evaluationResult) {
   document.getElementById("location").innerHTML = evaluationResult.url;
   document.getElementById("ruleset").innerHTML = evaluationResult.ruleset;
 
-  if (evaluationResult.option == 'summary') {
-    show('summary_grid');
+  switch(evaluationResult.option) {
+    case 'summary':
+      show('summary_grid');
+      updateTitle("Summary");
+      updateSummaryPanel(evaluationResult);
+      break;
 
-    // update Rule Summary
-    document.getElementById("violations").innerHTML      = evaluationResult.violations;
-    document.getElementById("warnings").innerHTML        = evaluationResult.warnings;
-    document.getElementById("manual_checks").innerHTML   = evaluationResult.manual_checks;
-    document.getElementById("passed").innerHTML          = evaluationResult.passed;
+    case 'group':
+      show('group_grid');
+      updateTitle(evaluationResult.groupLabel);
+      updateGroupPanel(evaluationResult);
+      break;
 
-    // Update Group Results
-
-    var html = '';
-    var node = document.getElementById("group_results");
-
-
-    for (let i = 0; i < evaluationResult.groupResults.length; i++) {
-      var gr = evaluationResult.groupResults[i];
-
-      html += addGroupResultRow(gr.id, gr.label, gr.violations, gr.warnings, gr.manual_checks, gr.passed);
-    }
-
-    html += addGroupResultRow('all', 'All', evaluationResult.violations, evaluationResult.warnings, evaluationResult.manual_checks, evaluationResult.passed);
-    node.innerHTML = html;
-
-    var buttons = node.getElementsByTagName('a');
-
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].addEventListener('click', handleGroupButton);
-    }
-
-  }
-
-  if (evaluationResult.option == 'group') {
-    show('group_grid');
-
-    // update Rule Summary
-    document.getElementById("violations").innerHTML      = evaluationResult.violations;
-    document.getElementById("warnings").innerHTML        = evaluationResult.warnings;
-    document.getElementById("manual_checks").innerHTML   = evaluationResult.manual_checks;
-    document.getElementById("passed").innerHTML          = evaluationResult.passed;
-
-    // Update Group Results
-
-    var html = '';
-    var node = document.getElementById("_results");
-
-
-    for (let i = 0; i < evaluationResult.groupResults.length; i++) {
-      var gr = evaluationResult.groupResults[i];
-
-      html += addGroupResultRow(gr.id, gr.label, gr.violations, gr.warnings, gr.manual_checks, gr.passed);
-    }
-
-    html += addGroupResultRow('all', 'All', evaluationResult.violations, evaluationResult.warnings, evaluationResult.manual_checks, evaluationResult.passed);
-    node.innerHTML = html;
-
-    var buttons = node.getElementsByTagName('button');
-
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].addEventListener('click', handleGroupButton);
-    }
+    default:
+      break;
 
   }
 
@@ -161,7 +180,6 @@ function sendGetGroupMessageToTabs(tabs) {
 }
 
 function handleGroupButton(event) {
-  alert(event.currentTarget.id);
   browser.tabs.query({
       currentWindow: true,
       active: true
