@@ -65,10 +65,9 @@ function addRuleCategoryData(aiResponse, evaluationResult) {
 
 
   function addItem(ruleCategoryId, label) {
-    console.log('[addRuleCategoryData][addItem]: ' + ruleCategoryId + ' ' + label);
 
     var summary = evaluationResult.getRuleResultsByCategory(ruleCategoryId).getRuleResultsSummary();
-    console.log('[addRuleCategoryData][addItem][summary]: ' + summary);
+//    console.log('[addRuleCategoryData][addItem][summary]: ' + summary);
 
     var item = { 'id'             : ruleCategoryId,
                  'label'          : label,
@@ -117,15 +116,45 @@ function summary(ruleset) {
 
 function addGroupSummaryData(aiResponse, evaluationResult, ruleCategoryId) {
 
-  if (typeof ruleCategoryId !== 'number') ruleCategoryId = OpenAjax.a11y.RULE_CATEGORIES.LANDMARKS;
+  function addRuleResult(ruleResult) {
+    console.log('[addGroupSummaryData][addRuleResult: ' + ruleResult);
 
-  console.log('[getSummaryData][Start]');
-  var ruleSummaryResult = evaluationResult.getRuleResultsByCategory(ruleCategoryId).getRuleResultsSummary();
+    var summary = ruleResult.getElementResultsSummary();
+
+    var item = { 'id'             : ruleResult.getRule().getId(),
+                 'label'          : ruleResult.getRuleSummary(),
+                 'required'       : ruleResult.isRuleRequired(),
+                 'violations'     : summary.violations,
+                 'warnings'       : summary.warnings,
+                 'manual_checks'  : summary.manual_checks,
+                 'passed'         : summary.passed,
+                 'hidden'         : summary.hidden
+               };
+
+    aiResponse.ruleResults.push(item);
+
+  }
+
+  if (typeof ruleCategoryId !== 'number') ruleCategoryId = OpenAjax.a11y.RULE_CATEGORIES.HEADINGS;
+
+  console.log('[getGroupSummaryData][Start]');
+  var ruleGroupResult   = evaluationResult.getRuleResultsByCategory(ruleCategoryId);
+  var ruleGroupInfo     = ruleGroupResult.getRuleGroupInfo();
+  var ruleSummaryResult = ruleGroupResult.getRuleResultsSummary();
+  var ruleResults       = ruleGroupResult.getRuleResultsArray();
+
+  aiResponse.groupLabel  = ruleGroupInfo.title;
 
   aiResponse.violations    = ruleSummaryResult.violations;
   aiResponse.warnings      = ruleSummaryResult.warnings;
   aiResponse.manual_checks = ruleSummaryResult.manual_checks;
   aiResponse.passed        = ruleSummaryResult.passed;
+
+  aiResponse.ruleResults = []
+
+  for(let i = 0; i < ruleResults.length; i++) {
+    addRuleResult(ruleResults[i]);
+  }
 
   console.log('[getSummaryData][End]');
 }
