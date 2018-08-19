@@ -6,9 +6,6 @@ header h1 {
   display: inline;
 }
 
-#summary_results {
-    margin: auto;
-}
 
 footer {
     position: absolute;
@@ -43,29 +40,34 @@ table {
   margin-top: 2.5em;
 }
 
-table#summary_results {
+table.summary {
+  margin: auto;
   border-collapse: separate;
   border-spacing: 10px;
 }
 
-table#summary_results th,
-table#summary_results td {
+table.summary th,
+table.summary td {
   text-align: center;
 }
 
-table#summary_results #violations {
+#summary_violations,
+#group_violations {
   background-color: #FFAEAE;
 }
 
-table#summary_results #warnings {
+#summary_warnings,
+#group_warnings {
   background-color: #FFEC94;
 }
 
-table#summary_results #manual_checks {
+#summary_manual_checks,
+#group_manual_checks {
   background-color: #B4D8E7;
 }
 
-table#summary_results #passed {
+#summary_passed,
+#group_passed {
   background-color: #B0E57C;
 }
 

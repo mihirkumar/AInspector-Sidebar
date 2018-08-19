@@ -15,51 +15,79 @@
     </div>
   </header>
 
-  <table id="summary_results">
-    <tr>
-      <th>V</th>
-      <th>W</th>
-      <th>MC</th>
-      <th>P</th>
-    </tr>
+  <main>
 
-    <tr>
-      <td id="violations">1</td>
-      <td id="warnings">1</td>
-      <td id="manual_checks">1</td>
-      <td id="passed">1</td>
-    </tr>
-  </table>
+    <div id="summary_panel">
 
-  <table id="summary_grid">
-    <thead>
-      <tr>
-        <th>Category</th>
-        <th>V</th>
-        <th>W</th>
-        <th>MC</th>
-        <th>P</th>
+      <table class="summary">
+        <tr>
+          <th>V</th>
+          <th>W</th>
+          <th>MC</th>
+          <th>P</th>
+        </tr>
+
+        <tr>
+          <td id="summary_violations">-</td>
+          <td id="summary_warnings">-</td>
+          <td id="summary_manual_checks">-</td>
+          <td id="summary_passed">-</td>
+        </tr>
+      </table>
+
+      <table class="grid">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>V</th>
+            <th>W</th>
+            <th>MC</th>
+            <th>P</th>
+          </tr>
+        </thead>
+        <tbody id="group_results">
+        </tbody>
+      </table>
+
+    </div>
+
+    <div id="group_panel">
+
+      <table class="summary">
+        <tr>
+          <th>V</th>
+          <th>W</th>
+          <th>MC</th>
+          <th>P</th>
+        </tr>
+
+        <tr>
+          <td id="group_violations">-</td>
+          <td id="group_warnings">-</td>
+          <td id="group_manual_checks">-</td>
+          <td id="group_passed">-</td>
+        </tr>
+      </table>
+
+      <table class="grid">
+        <thead>
+          <th>Rule</th>
+          <th>Required</th>
+          <th>Result</th>
+          <th>Message</th>
       </tr>
-    </thead>
-    <tbody id="group_results">
-    </tbody>
-  </table>
+        <tbody id="rule_results">
+        </tbody>
+      </table>
+    </div>
 
-  <table id="group_grid">
-    <thead>
-      <tr>
-        <th>Rule</th>
-        <th>Required</th>
-        <th>V</th>
-        <th>W</th>
-        <th>MC</th>
-        <th>P</th>
-        <th>H</th>
-      </tr>
-    </thead>
-    <tbody id="rule_results">
-    </tbody>
-  </table>
+    <div id="rule_panel">
+    </div>
+
+    <div id="preferences_panel">
+    </div>
+
+  </main>
 
   <footer style="width: 96%">
     <div class="info">Ruleset: <span id="ruleset"></span></div>
@@ -73,6 +101,8 @@
   </footer>
 
   <script src="panel.js"></script>
+  <script src="summary.js"></script>
+  <script src="group.js"></script>
 </body>
 
 </html>

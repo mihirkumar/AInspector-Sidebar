@@ -13,83 +13,7 @@ function notify(message) {
 }
 
 
-function updateSummaryPanel(evaluationResult) {
 
-  function addGroupResultRow(id, label, v, w, mc, p) {
-    var html = '<tr>'
-    html += '  <th><a href="#" id="' + id + '">' + label + '</a></th>';
-    html += '  <td>' + v     + '</td>';
-    html += '  <td>' + w     + '</td>';
-    html += '  <td>' + mc    + '</td>';
-    html += '  <td>' + p     + '</td>';
-    html += '</tr>'
-
-    return html;
-  }
-
-  // update Rule Summary
-  document.getElementById("violations").innerHTML      = evaluationResult.violations;
-  document.getElementById("warnings").innerHTML        = evaluationResult.warnings;
-  document.getElementById("manual_checks").innerHTML   = evaluationResult.manual_checks;
-  document.getElementById("passed").innerHTML          = evaluationResult.passed;
-
-  // Update Group Results
-
-  var html = '';
-  var node = document.getElementById("group_results");
-
-
-  for (let i = 0; i < evaluationResult.groupResults.length; i++) {
-    var gr = evaluationResult.groupResults[i];
-
-    html += addGroupResultRow(gr.id, gr.label, gr.violations, gr.warnings, gr.manual_checks, gr.passed);
-  }
-
-  html += addGroupResultRow('all', 'All', evaluationResult.violations, evaluationResult.warnings, evaluationResult.manual_checks, evaluationResult.passed);
-  node.innerHTML = html;
-
-  var buttons = node.getElementsByTagName('a');
-
-  for (let i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener('click', handleGroupButton);
-  }
-}
-
-function updateGroupPanel(evaluationResult) {
-
-  function addRuleResultRow(id, label, req, v, w, mc, p, h) {
-    var html = '<tr>'
-    html += '  <th><a href="#" id="' + id + '">' + label + '</a></th>';
-    html += '  <td>' + (req ? 'Y' : '') + '</td>';
-    html += '  <td>' + v     + '</td>';
-    html += '  <td>' + w     + '</td>';
-    html += '  <td>' + mc    + '</td>';
-    html += '  <td>' + p     + '</td>';
-    html += '  <td>' + h     + '</td>';
-    html += '</tr>'
-
-    return html;
-  }
-
-  // update Rule Summary
-  document.getElementById("violations").innerHTML      = evaluationResult.violations;
-  document.getElementById("warnings").innerHTML        = evaluationResult.warnings;
-  document.getElementById("manual_checks").innerHTML   = evaluationResult.manual_checks;
-  document.getElementById("passed").innerHTML          = evaluationResult.passed;
-
-  // Update Group Results
-
-  var html = '';
-  var node = document.getElementById("rule_results");
-
-  for (let i = 0; i < evaluationResult.ruleResults.length; i++) {
-    var rr = evaluationResult.ruleResults[i];0
-    html += addRuleResultRow(rr.id, rr.label, rr.required, rr.violations, rr.warnings, rr.manual_checks, rr.passed, rr.hidden);
-  }
-
-  node.innerHTML = html;
-
-}
 
 function changePanelElements(evaluationResult) {
 
@@ -119,21 +43,23 @@ function changePanelElements(evaluationResult) {
 
   // Hide all view options
 
-  hide('summary_grid');
-  hide('group_grid');
+  hide('summary_panel');
+  hide('group_panel');
+  hide('rule_panel');
+  hide('preferences_panel');
 
   document.getElementById("location").innerHTML = evaluationResult.url;
   document.getElementById("ruleset").innerHTML = evaluationResult.ruleset;
 
   switch(evaluationResult.option) {
     case 'summary':
-      show('summary_grid');
+      show('summary_panel');
       updateTitle("Summary");
       updateSummaryPanel(evaluationResult);
       break;
 
     case 'group':
-      show('group_grid');
+      show('group_panel');
       updateTitle(evaluationResult.groupLabel);
       updateGroupPanel(evaluationResult);
       break;
