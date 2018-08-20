@@ -2,15 +2,13 @@
 
 function updateGroupPanel(evaluationResult) {
 
-  function addRuleResultRow(id, label, req, v, w, mc, p, h) {
+  function addRuleResultRow(id, label, req, wcag, res, m) {
     var html = '<tr>'
     html += '  <th><a href="#" id="' + id + '">' + label + '</a></th>';
     html += '  <td>' + (req ? 'Y' : '') + '</td>';
-    html += '  <td>' + v     + '</td>';
-    html += '  <td>' + w     + '</td>';
-    html += '  <td>' + mc    + '</td>';
-    html += '  <td>' + p     + '</td>';
-    html += '  <td>' + h     + '</td>';
+    html += '  <td>' + wcag  + '</td>';
+    html += '  <td>' + res   + '</td>';
+    html += '  <td>' + m     + '</td>';
     html += '</tr>'
 
     return html;
@@ -29,7 +27,7 @@ function updateGroupPanel(evaluationResult) {
 
   for (let i = 0; i < evaluationResult.ruleResults.length; i++) {
     var rr = evaluationResult.ruleResults[i];0
-    html += addRuleResultRow(rr.id, rr.label, rr.required, rr.violations, rr.warnings, rr.manual_checks, rr.passed, rr.hidden);
+    html += addRuleResultRow(rr.id, rr.label, rr.required, rr.wcag, rr.result, rr.message);
   }
 
   node.innerHTML = html;

@@ -73,11 +73,19 @@ function changePanelElements(evaluationResult) {
 
 // Summary events and messages
 
+var message_args = {
+  option: 'summary',
+  ruleset: 'ARIA_STRICT',
+  groupType: 'rc',
+  groupId: 1,
+  rule: 'LANDMARK_1'
+}
+
 function sendGetSummaryMessageToTabs(tabs) {
   for (let tab of tabs) {
     browser.tabs.sendMessage(
       tab.id,
-      {clicked: true, option: 'summary'}
+      message_args
     ).then(response => {
       var evaluationResult = response.response;
       changePanelElements(evaluationResult);

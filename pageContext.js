@@ -121,14 +121,12 @@ function addGroupSummaryData(aiResponse, evaluationResult, ruleCategoryId) {
 
     var summary = ruleResult.getElementResultsSummary();
 
-    var item = { 'id'             : ruleResult.getRule().getId(),
-                 'label'          : ruleResult.getRuleSummary(),
-                 'required'       : ruleResult.isRuleRequired(),
-                 'violations'     : summary.violations,
-                 'warnings'       : summary.warnings,
-                 'manual_checks'  : summary.manual_checks,
-                 'passed'         : summary.passed,
-                 'hidden'         : summary.hidden
+    var item = { 'id'       : ruleResult.getRule().getId(),
+                 'label'    : ruleResult.getRuleSummary(),
+                 'required' : ruleResult.isRuleRequired(),
+                 'wcag'     : ruleResult.getWCAG20Level(),
+                 'result' : ruleResult.getResultValueNLS(),
+                 'message'  : ruleResult.getResultMessage()
                };
 
     aiResponse.ruleResults.push(item);
