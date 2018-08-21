@@ -12,41 +12,13 @@ function notify(message) {
   }
 }
 
-
-
-
 function changePanelElements(evaluationResult) {
-
-  function hide(id) {
-    var node = document.getElementById(id);
-
-    if (node) {
-      node.style.display = 'none';
-    }
-  }
-
-  function show(id) {
-    var node = document.getElementById(id);
-
-    if (node) {
-      node.style.display = 'block';
-    }
-  }
-
-  function updateTitle(title) {
-    var node = document.getElementById('title');
-
-    if (node) {
-      node.innerHTML = title;
-    }
-  }
 
   // Hide all view options
 
   hide('summary_panel');
   hide('group_panel');
   hide('rule_panel');
-  hide('preferences_panel');
 
   document.getElementById("location").innerHTML = evaluationResult.url;
   document.getElementById("ruleset").innerHTML = evaluationResult.ruleset;
@@ -70,6 +42,16 @@ function changePanelElements(evaluationResult) {
   }
 
 }
+
+// Initialize panel
+
+clearSummaryPanel();
+clearGroupPanel();
+
+showSummaryPanel();
+hideGroupPanel();
+hideRulePanel();
+
 
 // Summary events and messages
 

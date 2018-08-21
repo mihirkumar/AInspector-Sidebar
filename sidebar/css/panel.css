@@ -38,6 +38,7 @@ button:focus {
 
 table {
   margin-top: 2.5em;
+  clear: both;
 }
 
 table.summary {
@@ -48,7 +49,9 @@ table.summary {
 
 table.summary th,
 table.summary td {
+  padding: 0.5em;
   text-align: center;
+  width: 4em;
 }
 
 #summary_violations,
@@ -71,41 +74,47 @@ table.summary td {
   background-color: #B0E57C;
 }
 
-table {
+table.grid {
+  margin: 0;
+  padding: 0;
   border-collapse: collapse;
+  border: 1px solid #CCC;
 }
 
-table thead th {
+table.grid thead th {
+  padding-top: 0.5em;
   text-align: right;
+  padding-bottom: 0.25em;
+  border-bottom: 1px solid #CCC;
 }
 
-table thead th:first-child {
+table.grid thead th:first-child {
   text-align: left;
   padding-left: 0.5em;
 }
 
-table tbody tr:nth-child(even) {
+table.grid tbody tr:nth-child(even) {
   background: #EEE;
 }
 
-table tbody tr:nth-child(odd) {
+table.grid tbody tr:nth-child(odd) {
   background: #FFF;
 }
 
-table tbody th {
+table.grid tbody th {
   padding: 0.25em;
   text-align: left;
   padding-left: 0.5em;
 }
 
-table tbody td {
+table.grid tbody td {
   padding: 0.25em;
   text-align: right;
   width: 3em;
 }
 
-table a,
-table a:focus {
+table.grid a,
+table.grid a:focus {
   font-size: 1em;
   font-weight: normal;
   color: black;
