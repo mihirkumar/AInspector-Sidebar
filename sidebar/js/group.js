@@ -10,9 +10,9 @@ function showGroupPanel() {
   show('group_panel');
 }
 
-function addRuleResultRow(id, label, result, wcag, level, required) {
+function addRuleResultRow(rule_id, summary, result, wcag, level, required) {
   var html = '<tr>'
-  html += '  <th><a href="#" id="' + id + '">' + label + '</a></th>';
+  html += '  <th><a href="#" id="' + rule_id + '">' + summary + '</a></th>';
   html += '  <td class="' + result.toLowerCase() + '">' + result + '</td>';
   html += '  <td>' + wcag  + '</td>';
   html += '  <td>' + level + '</td>';
@@ -36,7 +36,7 @@ function clearGroupPanel() {
   var node = document.getElementById("rule_results");
 
   for (let i = 0; i < ruleLabels.length; i++) {
-    html += addRuleResultRow('', ruleLabels[i], '-', '-', '-', '-');
+    html += addRuleResultRow('', ruleLabels[i], '-', '-', '-', false);
   }
 
   node.innerHTML = html;
@@ -57,8 +57,9 @@ function updateGroupPanel(evaluationResult) {
   var node = document.getElementById("rule_results");
 
   for (let i = 0; i < evaluationResult.ruleResults.length; i++) {
-    var rr = evaluationResult.ruleResults[i];0
-    html += addRuleResultRow(rr.id, rr.label, rr.required, rr.wcag, rr.result, rr.message);
+    var rr = evaluationResult.ruleResults[i];
+    alert(rr.wcag);
+    html += addRuleResultRow(rr.rule_id, rr.summary, r.result, rr.wcag, rr.level, rr.required);
   }
 
   node.innerHTML = html;

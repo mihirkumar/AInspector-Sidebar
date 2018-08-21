@@ -43,6 +43,67 @@ function changePanelElements(evaluationResult) {
 
 }
 
+
+
+// Group events and messages
+
+function handleGetSummary() {
+  messageArgs.option = 'summary';
+
+  browser.tabs.query({
+      currentWindow: true,
+      active: true
+  }).then(sendMessageToTabs).catch(onError);
+}
+
+function handleGetGroup(id) {
+
+  var groupType = id.substring(0,2);
+  var groupId   = id.split('-')[1];
+
+  messageArgs.option    = 'group';
+  messageArgs.groupType = groupType;
+  messageArgs.groupId   = parseInt(groupId);
+
+  browser.tabs.query({
+      currentWindow: true,
+      active: true
+  }).then(sendMessageToTabs).catch(onError);
+};
+
+// Add event handlers
+
+var messageArgs = {
+  option: 'summary',
+  ruleset: 'ARIA_STRICT',
+  groupType: 'rc',
+  groupId: 1,
+  rule: 'LANDMARK_1'
+};
+
+function sendMessageToTabs(tabs) {
+  for (let tab of tabs) {
+    browser.tabs.sendMessage(
+      tab.id,
+      messageArgs
+    ).then(response => {
+      var evaluationResult = response.response;
+      changePanelElements(evaluationResult);
+    }).catch(onError);
+  }
+};
+
+var evaluateButton = document.getElementById('evaluate');
+evaluateButton.addEventListener("click", handleGetSummary);
+
+window.addEventListener("load", function(){
+    browser.tabs.query({
+        currentWindow: true,
+        active: true
+    }).then(sendMessageToTabs).catch(onError);
+});
+
+
 // Initialize panel
 
 clearSummaryPanel();
@@ -52,62 +113,4 @@ showSummaryPanel();
 hideGroupPanel();
 hideRulePanel();
 
-
-// Summary events and messages
-
-var message_args = {
-  option: 'summary',
-  ruleset: 'ARIA_STRICT',
-  groupType: 'rc',
-  groupId: 1,
-  rule: 'LANDMARK_1'
-}
-
-function sendGetSummaryMessageToTabs(tabs) {
-  for (let tab of tabs) {
-    browser.tabs.sendMessage(
-      tab.id,
-      message_args
-    ).then(response => {
-      var evaluationResult = response.response;
-      changePanelElements(evaluationResult);
-    }).catch(onError);
-  }
-}
-
-var evaluateButton = document.getElementById('evaluate');
-evaluateButton.addEventListener("click", function(){
-    browser.tabs.query({
-        currentWindow: true,
-        active: true
-    }).then(sendGetSummaryMessageToTabs).catch(onError);
-});
-
-window.addEventListener("load", function(){
-    browser.tabs.query({
-        currentWindow: true,
-        active: true
-    }).then(sendGetSummaryMessageToTabs).catch(onError);
-});
-
-// Group events and messages
-
-function sendGetGroupMessageToTabs(tabs) {
-  for (let tab of tabs) {
-    browser.tabs.sendMessage(
-      tab.id,
-      {clicked: true, option: 'group', group: 1}
-    ).then(response => {
-      var evaluationResult = response.response;
-      changePanelElements(evaluationResult);
-    }).catch(onError);
-  }
-}
-
-function handleGroupButton(event) {
-  browser.tabs.query({
-      currentWindow: true,
-      active: true
-  }).then(sendGetGroupMessageToTabs).catch(onError);
-}
 
