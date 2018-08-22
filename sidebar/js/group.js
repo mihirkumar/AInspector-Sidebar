@@ -58,8 +58,7 @@ function updateGroupPanel(evaluationResult) {
 
   for (let i = 0; i < evaluationResult.ruleResults.length; i++) {
     var rr = evaluationResult.ruleResults[i];
-    alert(rr.wcag);
-    html += addRuleResultRow(rr.rule_id, rr.summary, r.result, rr.wcag, rr.level, rr.required);
+    html += addRuleResultRow(rr.rule_id, rr.summary, rr.result, rr.wcag, rr.level, rr.required);
   }
 
   node.innerHTML = html;

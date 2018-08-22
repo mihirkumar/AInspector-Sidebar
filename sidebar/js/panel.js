@@ -43,8 +43,6 @@ function changePanelElements(evaluationResult) {
 
 }
 
-
-
 // Group events and messages
 
 function handleGetSummary() {
@@ -64,6 +62,8 @@ function handleGetGroup(id) {
   messageArgs.option    = 'group';
   messageArgs.groupType = groupType;
   messageArgs.groupId   = parseInt(groupId);
+
+  backButton.disabled = false;
 
   browser.tabs.query({
       currentWindow: true,
@@ -103,6 +103,39 @@ window.addEventListener("load", function(){
     }).then(sendMessageToTabs).catch(onError);
 });
 
+// Back button
+
+function handleBack(event) {
+  var update = false;
+
+  switch (messageArgs.option) {
+    case 'group':
+      messageArgs.option = 'summary';
+      backButton.disabled = true;
+      update = true;
+      showSummaryPanel();
+      hideGroupPanel();
+      break;
+
+    case 'rule':
+      messageArgs.option = 'group';
+      update = true;
+      break;
+
+    default:
+      break;
+  }
+
+  if (update) {
+    browser.tabs.query({
+        currentWindow: true,
+        active: true
+    }).then(sendMessageToTabs).catch(onError);
+  }
+};
+
+var backButton = document.getElementById('back');
+backButton.addEventListener('click', handleBack);
 
 // Initialize panel
 
@@ -113,4 +146,4 @@ showSummaryPanel();
 hideGroupPanel();
 hideRulePanel();
 
-
+backButton.disabled = true;

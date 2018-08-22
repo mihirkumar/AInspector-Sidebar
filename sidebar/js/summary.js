@@ -51,8 +51,6 @@ function addGroupResultRow(id, label, v, w, mc, p) {
 }
 
 function clearSummaryPanel() {
-
-
   // update Rule Summary
   document.getElementById("summary_violations").innerHTML      = '-';
   document.getElementById("summary_warnings").innerHTML        = '-';
@@ -85,13 +83,12 @@ function updateSummaryPanel(evaluationResult) {
 
   // Update Group Results
 
-  function updateGroupResults(id, groupResults) {
+  function updateGroupResults(group_id, groupResults) {
     var html = '';
-    var node = document.getElementById(id);
+    var node = document.getElementById(group_id + '_results');
 
     for (let i = 0; i < groupResults.length; i++) {
       var gr = groupResults[i];
-
       html += addGroupResultRow(gr.id, gr.label, gr.violations, gr.warnings, gr.manual_checks, gr.passed);
     }
 
@@ -101,11 +98,12 @@ function updateSummaryPanel(evaluationResult) {
     var buttons = node.getElementsByTagName('a');
 
     for (let i = 0; i < buttons.length; i++) {
-      buttons[i].addEventListener('click', function (event) {var id = 'rc-' + event.currentTarget.id; handleGetGroup(id);});
+      buttons[i].addEventListener('click', function (event) {var id = group_id + '-' + event.currentTarget.id; handleGetGroup(id);});
     }
   }
 
-  updateGroupResults('rc_results', evaluationResult.groupResults);
+  updateGroupResults('rc', evaluationResult.rcResults);
+  updateGroupResults('gl', evaluationResult.glResults);
 }
 
 function updateViewMenu() {
