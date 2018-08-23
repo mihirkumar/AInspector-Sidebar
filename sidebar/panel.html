@@ -103,9 +103,9 @@
           <tr>
             <th>Rule</th>
             <th>Result</th>
-            <th>WCAG</th>
-            <th>Level</th>
-            <th>Required</th>
+            <th title="WCAG Success Criteria">SC</th>
+            <th title="WCAG Level">Lev.</th>
+            <th title="Required">Req.</th>
           </tr>
         </thead>
         <tbody id="rule_results">
@@ -116,9 +116,49 @@
     <div id="rule_panel">
 
       <ul role="tablist" aria-label="Rule Result View Options">
+        <li id="da_tab" tabindex="-1" role="tab" aria-controls="da_tabpanel">Details/Action</li>
         <li id="er_tab" tabindex="-1" role="tab" aria-controls="er_tabpanel" aria-selected="true">Element Results</li>
-        <li id="rd_tab" tabindex="-1" role="tab" aria-controls="rd_tabpanel">Rule Details</li>
       </ul>
+
+      <div id="da_tabpanel" role="tabpanel" aria-labelledby="da_tab" hidden>
+
+        <table class="details_action">
+          <tbody>
+            <tr>
+              <th scope="row">Definition</th>
+              <td id="da_definition">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Action</th>
+              <td id="da_action">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Purpose</th>
+              <td id="da_purpose">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Techniques</th>
+              <td id="da_techniques">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Target Elements</th>
+              <td id="da_target_elements">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Compliance</th>
+              <td id="da_compliance">WCAG 2.0 Level A; Required | Recommended</td>
+            </tr>
+            <tr>
+              <th scope="row">WCAG Success Criteria</th>
+              <td id="da_wcag">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Additional Information</th>
+              <td id="da_information">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <div id="er_tabpanel" role="tabpanel" aria-labelledby="er_tab">
 
@@ -127,53 +167,13 @@
             <tr>
               <th>Element</th>
               <th>Result</th>
-              <th>Message</th>
+              <th>Pos.</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody id="element_results">
           </tbody>
         </table>
-      </div>
-
-      <div id="rd_tabpanel" role="tabpanel" aria-labelledby="rd_tab" hidden>
-
-        <table class="rule_details">
-          <tbody>
-            <tr>
-              <th scope="row">Definition</th>
-              <td id="rule_definition">-</td>
-            </tr>
-            <tr>
-              <th scope="row">Purpose</th>
-              <td id="rule_purpose">-</td>
-            </tr>
-            <tr>
-              <th scope="row">Required</th>
-              <td id="rule_required">-</td>
-            </tr>
-            <tr>
-              <th scope="row">WCAG 2.0 Success Criteria</th>
-              <td id="rule_wcag">-</td>
-            </tr>
-            <tr>
-              <th scope="row">Rule Category</th>
-              <td id="rule_rule_category">-</td>
-            </tr>
-            <tr>
-              <th scope="row">Target Resources</th>
-              <td id="rule_target_resourses">-</td>
-            </tr>
-            <tr>
-              <th scope="row">Techniques</th>
-              <td id="rule_techniques">-</td>
-            </tr>
-            <tr>
-              <th scope="row">Informational Links</th>
-              <td id="rule_information">-</td>
-            </tr>
-          </tbody>
-        </table>
-
       </div>
 
     </div>

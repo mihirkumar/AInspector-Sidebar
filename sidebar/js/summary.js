@@ -109,6 +109,10 @@ function updateSummaryPanel(evaluationResult) {
 function updateViewMenu() {
   viewMenu.removeAllOptions();
 
+  viewMenu.addOption('summary', 'menuitem', 'Summary', function() {handleGetSummary();});
+
+  viewMenu.addOption('', 'separator', '-------------');
+
   for (let i = 0; i < (rcOptions.length-1); i++) {
     viewMenu.addOption(rcOptions[i].id, 'menuitem', rcOptions[i].label, function() {var id = 'rc-' + rcOptions[i].id; handleGetGroup(id);});
   }
@@ -121,7 +125,9 @@ function updateViewMenu() {
 
   viewMenu.addOption('', 'separator', '-------------');
 
-  viewMenu.addOption(1, 'menuitem', 'All', function() {var mes = glOptions[i].id; alert(mes);});
+  var last = rcOptions.length-1;
+
+  viewMenu.addOption(rcOptions[last].id, 'menuitem', rcOptions[last].label, function() {var id = 'rc-' + rcOptions[last].id; handleGetGroup(id);});
 
 }
 

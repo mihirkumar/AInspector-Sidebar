@@ -59,6 +59,19 @@ function handleUpdateEvaluation() {
   }).then(sendMessageToTabs).catch(onError);
 }
 
+function handleGetSummary() {
+
+  messageArgs.option    = 'summary';
+
+  backButton.disabled = true;
+
+  browser.tabs.query({
+      currentWindow: true,
+      active: true
+  }).then(sendMessageToTabs).catch(onError);
+};
+
+
 function handleGetGroup(id) {
 
   var groupType = id.substring(0,2);
@@ -76,10 +89,15 @@ function handleGetGroup(id) {
   }).then(sendMessageToTabs).catch(onError);
 };
 
-function handleGetRule(id) {
+function handleGetRule(ruleId, position) {
 
-  messageArgs.option  = 'rule';
-  messageArgs.ruleId  = id;
+  if (typeof position !== 'number') {
+    position = -1;
+  }
+
+  messageArgs.option    = 'rule';
+  messageArgs.ruleId    = ruleId;
+  messageArgs.position  = position;
 
   backButton.disabled = false;
 
@@ -97,7 +115,9 @@ var messageArgs = {
   ruleset: 'ARIA_STRICT',
   groupType: 'rc',
   groupId: 1,
-  rule: 'LANDMARK_1'
+  rule: '',
+  position: -1,
+  highight: 'none'  // other options 'selected', 'v/w', 'mc' and 'all'
 };
 
 function sendMessageToTabs(tabs) {

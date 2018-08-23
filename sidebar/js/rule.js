@@ -8,56 +8,52 @@ function showRulePanel() {
   show('rule_panel');
 }
 
-function addGroupResultRow(id, label, v, w, mc, p) {
+function addElementResultRow(element, result, position, actionMessage) {
+
   var html = '<tr>'
-  html += '  <th class="text"><a href="#" id="' + id + '">' + label + '</a></th>';
-  html += '  <td class="num">' + v     + '</td>';
-  html += '  <td class="num">' + w     + '</td>';
-  html += '  <td class="num">' + mc    + '</td>';
-  html += '  <td class="num">' + p     + '</td>';
+  html += '  <th class="text"><a href="#" id="' + position + '">' + element + '</a></th>';
+  html += '  <td class="' + result.toLowerCase() + '">' + result + '</td>';
+  html += '  <td class="num">' + position + '</td>';
+  html += '  <td class="text">' + actionMessage  + '</td>';
   html += '</tr>'
 
   return html;
 }
 
-function clearSummaryPanel() {
-  // update Rule Summary
-  document.getElementById("summary_violations").innerHTML      = '-';
-  document.getElementById("summary_warnings").innerHTML        = '-';
-  document.getElementById("summary_manual_checks").innerHTML   = '-';
-  document.getElementById("summary_passed").innerHTML          = '-';
+function clearRulePanel() {
 
-  // Update Group Results
 
-  var html = '';
-  for (let i = 0; i < rcOptions.length; i++) {
-    html += addGroupResultRow('', rcOptions[i].label, '-', '-', '-', '-');
-  }
-  document.getElementById("rc_results").innerHTML = html;
+}
 
-  html = '';
-  for (let i = 0; i < glOptions.length; i++) {
-    html += addGroupResultRow('', glOptions[i].label, '-', '-', '-', '-');
-  }
-  document.getElementById("gl_results").innerHTML = html;
+function updateDetailsAction(evaluationResult) {
+
+  var da = evaluationResult.detailsAction;
+
+  document.getElementById('da_definition').innerHTML = da.definition;
 
 }
 
 function updateRulePanel(evaluationResult) {
-  var html = '';
-  var node = document.getElementById(element_results');
 
-  for (let i = 0; i < groupResults.length; i++) {
-    var gr = groupResults[i];
-    html += addGroupResultRow(gr.id, gr.label, gr.violations, gr.warnings, gr.manual_checks, gr.passed);
+  updateDetailsAction(evaluationResult);
+
+  var html = '';
+  var node = document.getElementById('element_results');
+
+  var elementResults = evaluationResult.elementResults;
+
+  for (let i = 0; i < elementResults.length; i++) {
+    var er = elementResults[i];
+    html += addElementResultRow(er.element, er.result, er.position, er.actionMessage);
   }
 
-  html += addGroupResultRow(0x0FFF, 'All', evaluationResult.violations, evaluationResult.warnings, evaluationResult.manual_checks, evaluationResult.passed);
   node.innerHTML = html;
 
   var buttons = node.getElementsByTagName('a');
 
+  var ruleId = messageArgs.ruleId;
+
   for (let i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener('click', function (event) {var id = group_id + '-' + event.currentTarget.id; handleGetGroup(id);});
+    buttons[i].addEventListener('click', function (event) {var pos = parseInt(event.currentTarget.id); handleGetRule(ruleId, pos);});
   }
 }
