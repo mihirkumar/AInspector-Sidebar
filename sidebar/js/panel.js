@@ -36,6 +36,12 @@ function changePanelElements(evaluationResult) {
       updateGroupPanel(evaluationResult);
       break;
 
+    case 'rule':
+      show('rule_panel');
+      updateTitle('Rule Result');
+      updateRulePanel(evaluationResult);
+      break;
+
     default:
       break;
 
@@ -45,8 +51,7 @@ function changePanelElements(evaluationResult) {
 
 // Group events and messages
 
-function handleGetSummary() {
-  messageArgs.option = 'summary';
+function handleUpdateEvaluation() {
 
   browser.tabs.query({
       currentWindow: true,
@@ -71,6 +76,20 @@ function handleGetGroup(id) {
   }).then(sendMessageToTabs).catch(onError);
 };
 
+function handleGetRule(id) {
+
+  messageArgs.option  = 'rule';
+  messageArgs.ruleId  = id;
+
+  backButton.disabled = false;
+
+  browser.tabs.query({
+      currentWindow: true,
+      active: true
+  }).then(sendMessageToTabs).catch(onError);
+};
+
+
 // Add event handlers
 
 var messageArgs = {
@@ -94,7 +113,7 @@ function sendMessageToTabs(tabs) {
 };
 
 var evaluateButton = document.getElementById('evaluate');
-evaluateButton.addEventListener("click", handleGetSummary);
+evaluateButton.addEventListener("click", handleUpdateEvaluation);
 
 window.addEventListener("load", function(){
     browser.tabs.query({
@@ -120,6 +139,8 @@ function handleBack(event) {
     case 'rule':
       messageArgs.option = 'group';
       update = true;
+      showGroupPanel();
+      hideRulePanel();
       break;
 
     default:

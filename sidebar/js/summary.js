@@ -40,11 +40,11 @@ function showSummaryPanel() {
 
 function addGroupResultRow(id, label, v, w, mc, p) {
   var html = '<tr>'
-  html += '  <th><a href="#" id="' + id + '">' + label + '</a></th>';
-  html += '  <td>' + v     + '</td>';
-  html += '  <td>' + w     + '</td>';
-  html += '  <td>' + mc    + '</td>';
-  html += '  <td>' + p     + '</td>';
+  html += '  <th class="text"><a href="#" id="' + id + '">' + label + '</a></th>';
+  html += '  <td class="num">' + v     + '</td>';
+  html += '  <td class="num">' + w     + '</td>';
+  html += '  <td class="num">' + mc    + '</td>';
+  html += '  <td class="num">' + p     + '</td>';
   html += '</tr>'
 
   return html;

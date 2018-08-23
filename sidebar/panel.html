@@ -47,14 +47,14 @@
       </ul>
 
       <div id="rc_tabpanel" role="tabpanel" aria-labelledby="rc_tab">
-        <table class="grid">
+        <table class="grid summary">
           <thead>
             <tr>
-              <th>Category</th>
-              <th>V</th>
-              <th>W</th>
-              <th>MC</th>
-              <th>P</th>
+              <th class="text">Category</th>
+              <th class="num">V</th>
+              <th class="num">W</th>
+              <th class="num">MC</th>
+              <th class="num">P</th>
             </tr>
           </thead>
           <tbody id="rc_results">
@@ -63,7 +63,7 @@
       </div>
 
       <div id="gl_tabpanel" role="tabpanel" aria-labelledby="gl_tab" hidden>
-        <table class="grid">
+        <table class="grid summary">
           <thead>
             <tr>
               <th>Category</th>
@@ -98,7 +98,7 @@
         </tr>
       </table>
 
-      <table class="grid">
+      <table class="grid group">
         <thead>
           <tr>
             <th>Rule</th>
@@ -114,6 +114,68 @@
     </div>
 
     <div id="rule_panel">
+
+      <ul role="tablist" aria-label="Rule Result View Options">
+        <li id="er_tab" tabindex="-1" role="tab" aria-controls="er_tabpanel" aria-selected="true">Element Results</li>
+        <li id="rd_tab" tabindex="-1" role="tab" aria-controls="rd_tabpanel">Rule Details</li>
+      </ul>
+
+      <div id="er_tabpanel" role="tabpanel" aria-labelledby="er_tab">
+
+        <table class="grid elements">
+          <thead>
+            <tr>
+              <th>Element</th>
+              <th>Result</th>
+              <th>Message</th>
+            </tr>
+          </thead>
+          <tbody id="element_results">
+          </tbody>
+        </table>
+      </div>
+
+      <div id="rd_tabpanel" role="tabpanel" aria-labelledby="rd_tab" hidden>
+
+        <table class="rule_details">
+          <tbody>
+            <tr>
+              <th scope="row">Definition</th>
+              <td id="rule_definition">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Purpose</th>
+              <td id="rule_purpose">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Required</th>
+              <td id="rule_required">-</td>
+            </tr>
+            <tr>
+              <th scope="row">WCAG 2.0 Success Criteria</th>
+              <td id="rule_wcag">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Rule Category</th>
+              <td id="rule_rule_category">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Target Resources</th>
+              <td id="rule_target_resourses">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Techniques</th>
+              <td id="rule_techniques">-</td>
+            </tr>
+            <tr>
+              <th scope="row">Informational Links</th>
+              <td id="rule_information">-</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
     </div>
 
   </main>

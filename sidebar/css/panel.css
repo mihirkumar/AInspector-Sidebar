@@ -55,22 +55,26 @@ table.summary td {
 }
 
 #summary_violations,
-#group_violations {
+#group_violations,
+table.grid tbody td.v {
   background-color: #FFAEAE;
 }
 
 #summary_warnings,
-#group_warnings {
+#group_warnings,
+table.grid tbody td.w {
   background-color: #FFEC94;
 }
 
 #summary_manual_checks,
-#group_manual_checks {
+#group_manual_checks,
+table.grid tbody td.mc {
   background-color: #B4D8E7;
 }
 
 #summary_passed,
-#group_passed {
+#group_passed,
+table.grid tbody td.p  {
   background-color: #B0E57C;
 }
 
@@ -82,10 +86,17 @@ table.grid {
 }
 
 table.grid thead th {
+  padding: 0.25em;
   padding-top: 0.5em;
+  padding-right: 1em;
   text-align: right;
   padding-bottom: 0.25em;
   border-bottom: 1px solid #CCC;
+}
+
+table.grid thead th.num {
+  text-align: center;
+  padding-right: 0.25em;
 }
 
 table.grid thead th:first-child {
@@ -109,8 +120,14 @@ table.grid tbody th {
 
 table.grid tbody td {
   padding: 0.25em;
+  padding-right: 1em;
   text-align: right;
   width: 3em;
+}
+
+table.group tbody td {
+  padding-right: 0.25em;
+  text-align: center;
 }
 
 table.grid a,

@@ -63,5 +63,11 @@ function updateGroupPanel(evaluationResult) {
 
   node.innerHTML = html;
 
+  var buttons = node.getElementsByTagName('a');
+
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', function (event) {var rule_id = event.currentTarget.id; handleGetRule(rule_id);});
+  }
+
 }
 
