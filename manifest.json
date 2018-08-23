@@ -6,12 +6,12 @@
     "version": "0.1",
   
     "sidebar_action": {
-      "default_icon": "icons/star.png",
+      "default_icon": "icons/icon.png",
       "default_title" : "AInspector Sidebar",
       "default_panel": "sidebar/panel.html"
     },
   
-    "permissions": ["storage", "activeTab", "tabs"],
+    "permissions": ["storage", "activeTab", "tabs", "contextMenus"],
 
     "commands": {
       "_execute_sidebar_action": {
