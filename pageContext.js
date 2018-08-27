@@ -5,7 +5,6 @@ function handleError(error) {
 }
 
 window.onload = function notifyPanel() {
-  console.log('[onload][Start]');
 
   // to be run when the window finishes loading
   var aiResponse = summary();
@@ -17,7 +16,7 @@ window.onload = function notifyPanel() {
 }
 
 function evaluateRules(ruleset) {
-  console.log('[evaluateRules][Start]: ' + ruleset);
+//  console.log('[evaluateRules][Start]: ' + ruleset);
 
   if (ruleset !== 'ARIA_TRANS' && ruleset !== 'ARIA_STRICT') {
     ruleset = 'ARIA_STRICT';
@@ -32,23 +31,22 @@ function evaluateRules(ruleset) {
   evaluator_factory.setFeature('groups', 7);
   var evaluator = evaluator_factory.newEvaluator();
   var evaluationResult = evaluator.evaluate(doc, doc.title, doc.location.href);
-  // var out = evaluation.toJSON(true);
-  console.log('[evaluateRules][End]: ' + evaluationResult);
+//  console.log('[evaluateRules][End]: ' + evaluationResult);
   return evaluationResult;
 }
 
 function getCommonData(evaluationResult) {
-  console.log('[getCommonData][Start]');
+//  console.log('[getCommonData][Start]');
   // gets required data from evaluation object to return to panel
   var aiResponse = new Object();
   aiResponse.url = evaluationResult.getURL();
   aiResponse.ruleset = evaluationResult.getRuleset().getId();
-  console.log('[getCommonData][End]: ' + aiResponse);
+//  console.log('[getCommonData][End]: ' + aiResponse);
   return aiResponse;
 }
 
 function addSummaryData(aiResponse, evaluationResult) {
-  console.log('[getSummaryData][Start]');
+//  console.log('[getSummaryData][Start]');
   var ruleGroupResult = evaluationResult.getRuleResultsAll();
   var ruleSummaryResult = ruleGroupResult.getRuleResultsSummary();
 
@@ -57,7 +55,7 @@ function addSummaryData(aiResponse, evaluationResult) {
   aiResponse.manual_checks = ruleSummaryResult.manual_checks;
   aiResponse.passed        = ruleSummaryResult.passed;
 
-  console.log('[getSummaryData][End]');
+//  console.log('[getSummaryData][End]');
 }
 
 function addRuleCategoryData(aiResponse, evaluationResult) {
@@ -78,11 +76,11 @@ function addRuleCategoryData(aiResponse, evaluationResult) {
                  'not_applicable' : summary.not_applicable
                };
 
-    aiResponse.groupResults.push(item);
+    aiResponse.rcResults.push(item);
 
   }
 
-  aiResponse.groupResults = [];
+  aiResponse.rcResults = [];
 
   addItem(OpenAjax.a11y.RULE_CATEGORIES.LANDMARKS, 'Landmarks');
   addItem(OpenAjax.a11y.RULE_CATEGORIES.HEADINGS, 'Headings');
@@ -100,43 +98,94 @@ function addRuleCategoryData(aiResponse, evaluationResult) {
   console.log('[addRuleCategoryData][End]');
 }
 
+function addGuidelineData(aiResponse, evaluationResult) {
+  console.log('[addRuleCategoryData][Start]');
+
+
+  function addItem(guidelineId, label) {
+
+    var summary = evaluationResult.getRuleResultsByGuideline(guidelineId).getRuleResultsSummary();
+//    console.log('[addRuleCategoryData][addItem][summary]: ' + summary);
+
+    var item = { 'id'             : guidelineId,
+                 'label'          : label,
+                 'violations'     : summary.violations,
+                 'warnings'       : summary.warnings,
+                 'manual_checks'  : summary.manual_checks,
+                 'passed'         : summary.passed,
+                 'not_applicable' : summary.not_applicable
+               };
+
+    aiResponse.glResults.push(item);
+
+  }
+
+  aiResponse.glResults = [];
+
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_1, 'Text Alternatives');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_2, 'Time-based Media');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_3, 'Adaptable');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_4, 'Distinguishable');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_2_1, 'Keyboard Accessible' );
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_2_2, 'Enough Time');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_2_3, 'Seizures');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_2_4, 'Navigable');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_3_1, 'Readable');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_3_2, 'Predictable');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_3_3, 'Input Assistance');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_1, 'Compatible');
+
+  console.log('[addRuleCategoryData][End]');
+}
+
 function summary(ruleset) {
-  console.log('[summary][Start]');
+//  console.log('[summary][Start]');
   var evaluationResult = evaluateRules(ruleset);
   var aiResponse = getCommonData(evaluationResult);
   addSummaryData(aiResponse, evaluationResult);
   addRuleCategoryData(aiResponse, evaluationResult);
-  aiResponse.option = 'summary'
+  addGuidelineData(aiResponse, evaluationResult);
+  aiResponse.option = 'summary';
 
   console.log('[summary][URL]: '     + aiResponse.url);
   console.log('[summary][Ruleset]: ' + aiResponse.ruleset);
-  console.log('[summary][End]: '     + aiResponse);
+//  console.log('[summary][End]: '     + aiResponse);
   return aiResponse;
 }
 
-function addGroupSummaryData(aiResponse, evaluationResult, ruleCategoryId) {
+function addGroupSummaryData(aiResponse, evaluationResult, groupType, groupId) {
 
-  function addRuleResult(ruleResult) {
-    console.log('[addGroupSummaryData][addRuleResult: ' + ruleResult);
+  function getRuleResult(ruleResult) {
+//    console.log('[addGroupSummaryData][addRuleResult: ' + ruleResult);
 
-    var summary = ruleResult.getElementResultsSummary();
+    var ruleId = ruleResult.getRule().getId();
 
-    var item = { 'id'       : ruleResult.getRule().getId(),
-                 'label'    : ruleResult.getRuleSummary(),
+    var item = { 'ruleId'   : ruleId,
+                 'summary'  : ruleResult.getRuleSummary(),
                  'required' : ruleResult.isRuleRequired(),
-                 'wcag'     : ruleResult.getWCAG20Level(),
-                 'result' : ruleResult.getResultValueNLS(),
-                 'message'  : ruleResult.getResultMessage()
+                 'wcag'     : ruleResult.getRule().getPrimarySuccessCriterion().id,
+                 'result'   : ruleResult.getResultValueNLS(),
+                 'level'    : ruleResult.getWCAG20LevelNLS(),
+                 'messages' : ruleResult.getResultMessagesArray(),
+                 'detailsAction' : getDetailsAction(evaluationResult, ruleId)
                };
 
-    aiResponse.ruleResults.push(item);
+
+    return item;
 
   }
 
-  if (typeof ruleCategoryId !== 'number') ruleCategoryId = OpenAjax.a11y.RULE_CATEGORIES.HEADINGS;
+  console.log('[getGroupSummaryData][Start]: ' + groupType + ' ' + groupId);
 
-  console.log('[getGroupSummaryData][Start]');
-  var ruleGroupResult   = evaluationResult.getRuleResultsByCategory(ruleCategoryId);
+  var ruleGroupResult;
+
+  if (groupType === 'gl') {
+    ruleGroupResult   = evaluationResult.getRuleResultsByGuideline(groupId);
+  }
+  else {
+    ruleGroupResult   = evaluationResult.getRuleResultsByCategory(groupId);
+  }
+
   var ruleGroupInfo     = ruleGroupResult.getRuleGroupInfo();
   var ruleSummaryResult = ruleGroupResult.getRuleResultsSummary();
   var ruleResults       = ruleGroupResult.getRuleResultsArray();
@@ -151,24 +200,114 @@ function addGroupSummaryData(aiResponse, evaluationResult, ruleCategoryId) {
   aiResponse.ruleResults = []
 
   for(let i = 0; i < ruleResults.length; i++) {
-    addRuleResult(ruleResults[i]);
+    aiResponse.ruleResults.push(getRuleResult(ruleResults[i]));
   }
 
-  console.log('[getSummaryData][End]');
+//  console.log('[getSummaryData][End]');
 }
 
-function group(ruleset) {
-  console.log('[group][Start]');
+function group(ruleset, groupType, groupId) {
   var evaluationResult = evaluateRules(ruleset);
   var aiResponse = getCommonData(evaluationResult);
-  addGroupSummaryData(aiResponse, evaluationResult);
+  addGroupSummaryData(aiResponse, evaluationResult, groupType, groupId);
   aiResponse.option = 'group'
 
-  console.log('[group][URL]: '     + aiResponse.url);
+  console.log('[group][URL]:     ' + aiResponse.url);
   console.log('[group][Ruleset]: ' + aiResponse.ruleset);
-  console.log('[group][End]: '     + aiResponse);
+  console.log('[group][End]:     ' + aiResponse.groupLabel);
   return aiResponse;
 }
+
+// Rule result
+
+function getDetailsAction(evaluationResult, ruleId) {
+
+  function getInformationalInfoArray(infoItems) {
+
+    function getItem(title, url) {
+      var item = {};
+      item.title = title;
+      item.url = url;
+      return item;
+    }
+
+    var items = [];
+
+    for (let i = 0; i < infoItems.length; i++) {
+
+      items.push(getItem(infoItems[i].title, infoItems[i].url));
+
+    }
+
+    return items;
+  }
+
+  var ruleResult = evaluationResult.getRuleResult(ruleId);
+  var rule       = ruleResult.getRule();
+  var required   = ruleResult.isRuleRequired()
+
+  var detailsAction = {
+    'ruleId'             : rule.getId(),
+    'definition'         : rule.getDefinition(required),
+    'action'             : ruleResult.getResultMessagesArray(),
+    'purpose'            : rule.getPurpose(),
+    'techniques'         : getInformationalInfoArray(rule.getTechniques()),
+    'targetElements'     : rule.getTargetResources(),
+    'compliance'         : 'WCAG Level ' + rule.getWCAG20Level() + ', ' + (ruleResult.isRuleRequired() ? 'Required' : 'Recommended'),
+    'wcagPrimary'        : rule.getPrimarySuccessCriterion().title,
+    'wcagSecondary'      : rule.getRelatedSuccessCriteria(),
+    'informationalLinks' : getInformationalInfoArray(rule.getInformationalLinks())
+  }
+
+  return detailsAction;
+
+}
+
+function addRuleResultData(aiResponse, evaluationResult, ruleId) {
+
+  function addElementResult(elementResult) {
+    console.log('[addRuleResultData][addElementResult]: ' + elementResult.getElementIdentifier());
+
+    var item = { 'element'       : elementResult.getElementIdentifier(),
+                 'position'      : elementResult.getOrdinalPosition(),
+                 'result'        : elementResult.getResultValueNLS(),
+                 'actionMessage' : elementResult.getResultMessage()
+               };
+
+    aiResponse.elementResults.push(item);
+
+  }
+
+  console.log('[addRuleResultData][Start]: ' + ruleId);
+
+  var ruleResult     = evaluationResult.getRuleResult(ruleId);
+
+  var elementResults = ruleResult.getElementResultsArray();
+
+  aiResponse.elementResults = []
+
+  for(let i = 0; i < elementResults.length; i++) {
+    addElementResult(elementResults[i]);
+  }
+
+  console.log('[addRuleResultData][End]');
+}
+
+function rule(ruleset, ruleId) {
+  console.log('[rule][Start]:   ' + ruleId);
+  var evaluationResult = evaluateRules(ruleset);
+  var aiResponse  = getCommonData(evaluationResult);
+
+  aiResponse.detailsAction = getDetailsAction(evaluationResult, ruleId);
+  addRuleResultData(aiResponse, evaluationResult, ruleId);
+  aiResponse.option = 'rule'
+
+  console.log('[rule][URL]:     ' + aiResponse.url);
+  console.log('[rule][Ruleset]: ' + aiResponse.ruleset);
+  console.log('[rule][End]:     ');
+  return aiResponse;
+}
+
 
 browser.runtime.onMessage.addListener(request => {
   // to be executed on receiving messages from the panel
@@ -186,8 +325,8 @@ browser.runtime.onMessage.addListener(request => {
   }
 
   console.log("[onMessage][start]");
-  console.log('[onMessage][option]: ' + option);
-  console.log('[onMessage][ruleset]: ' + ruleset);
+  console.log('[onMessage][option]:    ' + option);
+  console.log('[onMessage][ruleset]:   ' + ruleset);
 
   switch (option) {
     case 'summary':
@@ -195,7 +334,14 @@ browser.runtime.onMessage.addListener(request => {
       break;
 
     case 'group':
-      aiResponse = group(ruleset);
+      console.log('[onMessage][groupType]: ' + request.groupType);
+      console.log('[onMessage][groupId]:   ' + request.groupId);
+      aiResponse = group(ruleset, request.groupType, request.groupId);
+      break;
+
+    case 'rule':
+      console.log('[onMessage][ruleId]: ' + request.ruleId);
+      aiResponse = rule(ruleset, request.ruleId);
       break;
 
     default:

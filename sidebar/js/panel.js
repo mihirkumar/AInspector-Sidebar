@@ -20,8 +20,16 @@ function changePanelElements(evaluationResult) {
   hide('group_panel');
   hide('rule_panel');
 
-  document.getElementById("location").innerHTML = evaluationResult.url;
   document.getElementById("ruleset").innerHTML = evaluationResult.ruleset;
+
+  var url = evaluationResult.url;
+  if (evaluationResult.url.length > 50) {
+    url = evaluationResult.url.substring(0, 48) + '...';
+  }
+  document.getElementById("location").innerHTML = url;
+  if (url !== evaluationResult.url) {
+    document.getElementById("location").setAttribute('title', evaluationResult.url);
+  }
 
   switch(evaluationResult.option) {
     case 'summary':
@@ -107,6 +115,9 @@ function handleGetRule(ruleId, position) {
   }).then(sendMessageToTabs).catch(onError);
 };
 
+function handleUpdateDetailsAction(ruleId) {
+
+};
 
 // Add event handlers
 
@@ -121,6 +132,10 @@ var messageArgs = {
 };
 
 function sendMessageToTabs(tabs) {
+  clearSummaryPanel();
+  clearGroupPanel();
+  clearRulePanel();
+
   for (let tab of tabs) {
     browser.tabs.sendMessage(
       tab.id,

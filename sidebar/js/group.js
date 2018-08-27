@@ -12,11 +12,11 @@ function showGroupPanel() {
 
 function addRuleResultRow(rule_id, summary, result, wcag, level, required) {
   var html = '<tr>'
-  html += '  <th><a href="#" id="' + rule_id + '">' + summary + '</a></th>';
-  html += '  <td class="' + result.toLowerCase() + '">' + result + '</td>';
-  html += '  <td>' + wcag  + '</td>';
-  html += '  <td>' + level + '</td>';
-  html += '  <td>' + (required ? 'Y' : '') + '</td>';
+  html += '  <th class="text rule"><a href="#" id="' + rule_id + '">' + summary + '</a></th>';
+  html += '  <td class="value result '    + result.toLowerCase() + '">' + result + '</td>';
+  html += '  <td class="value sc">'       + wcag  + '</td>';
+  html += '  <td class="value level">'    + level + '</td>';
+  html += '  <td class="value required">' + (required ? 'Y' : '') + '</td>';
   html += '</tr>'
 
   return html;
@@ -33,17 +33,30 @@ function clearGroupPanel() {
   // Update Group Results
 
   var html = '';
-  var node = document.getElementById("rule_results");
+  var cells = document.querySelectorAll('tbody#rule_results td');
 
-  for (let i = 0; i < ruleLabels.length; i++) {
-    html += addRuleResultRow('', ruleLabels[i], '-', '-', '-', false);
+  for (let i = 0; i < cells.length; i++) {
+    cells[i].innerHTML = '-';
   }
-
-  node.innerHTML = html;
 
 }
 
 function updateGroupPanel(evaluationResult) {
+
+  function getDetailsAction(ruleResults, ruleId) {
+
+    var da = ruleResults[0].detailsAction;
+
+    for (let i = 0; i < ruleResults.length; i++) {
+      if (ruleResults[i].ruleId === ruleId) {
+        da = ruleResults[i].detailsAction;
+        return da;
+      }
+    }
+
+    return da;
+  }
+
 
   // update Rule Summary
   document.getElementById("group_violations").innerHTML      = evaluationResult.violations;
@@ -56,9 +69,11 @@ function updateGroupPanel(evaluationResult) {
   var html = '';
   var node = document.getElementById("rule_results");
 
-  for (let i = 0; i < evaluationResult.ruleResults.length; i++) {
-    var rr = evaluationResult.ruleResults[i];
-    html += addRuleResultRow(rr.rule_id, rr.summary, rr.result, rr.wcag, rr.level, rr.required);
+  var ruleResults = evaluationResult.ruleResults;
+
+  for (let i = 0; i < ruleResults.length; i++) {
+    var rr = ruleResults[i];
+    html += addRuleResultRow(rr.ruleId, rr.summary, rr.result, rr.wcag, rr.level, rr.required);
   }
 
   node.innerHTML = html;
@@ -66,8 +81,12 @@ function updateGroupPanel(evaluationResult) {
   var buttons = node.getElementsByTagName('a');
 
   for (let i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener('click', function (event) {var rule_id = event.currentTarget.id; handleGetRule(rule_id);});
+
+    buttons[i].addEventListener('click', function (event) {var ruleId = event.currentTarget.id; handleGetRule(ruleId);});
+    buttons[i].addEventListener('focus', function (event) {var da = getDetailsAction(ruleResults, event.currentTarget.id); updateDetailsAction('rr', da);});
+    buttons[i].addEventListener('mouseover', function (event) {var da = getDetailsAction(ruleResults, event.currentTarget.id); updateDetailsAction('rr', da);});
   }
 
 }
+
 

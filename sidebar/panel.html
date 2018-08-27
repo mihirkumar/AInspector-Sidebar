@@ -66,12 +66,11 @@
         <table class="grid summary">
           <thead>
             <tr>
-              <th>Category</th>
-              <th>V</th>
-              <th>W</th>
-              <th>MC</th>
-              <th>P</th>
-            </tr>
+              <th class="text">Category</th>
+              <th class="num">V</th>
+              <th class="num">W</th>
+              <th class="num">MC</th>
+              <th class="num">P</th>            </tr>
           </thead>
           <tbody id="gl_results">
           </tbody>
@@ -98,19 +97,65 @@
         </tr>
       </table>
 
-      <table class="grid group">
+      <table role="grid" class="grid rules">
         <thead>
           <tr>
-            <th>Rule</th>
-            <th>Result</th>
-            <th title="WCAG Success Criteria">SC</th>
-            <th title="WCAG Level">Lev.</th>
-            <th title="Required">Req.</th>
+            <th class="text rule">Rule</th>
+            <th class="value result">Result</th>
+            <th class="value sc" title="WCAG Success Criteria">SC</th>
+            <th class="value level" title="WCAG Level">Level</th>
+            <th class="value required" title="Required">Req</th>
           </tr>
         </thead>
         <tbody id="rule_results">
         </tbody>
       </table>
+
+      <div class="selected_rule">
+        <h2>Selected Rule</h2>
+        <div class="right">
+          <button id="details">Details <span aria-hidden="true" stlye="padding-left: 0.25em">&#10148;</span></button>
+        </div>
+      </div>
+
+      <table class="details_action">
+        <tbody class="rule_results_details">
+          <tr>
+            <th scope="row">Definition</th>
+            <td id="rr_definition">-</td>
+          </tr>
+          <tr>
+            <th scope="row">Action</th>
+            <td id="rr_action">-</td>
+          </tr>
+          <tr>
+            <th scope="row">Purpose</th>
+            <td id="rr_purpose">-</td>
+          </tr>
+          <tr>
+            <th scope="row">Techniques</th>
+            <td id="rr_techniques">-</td>
+          </tr>
+          <tr>
+            <th scope="row">Target Elements</th>
+            <td id="rr_target_elements">-</td>
+          </tr>
+          <tr>
+            <th scope="row">Compliance</th>
+            <td id="rr_compliance">WCAG Level A; Required | Recommended</td>
+          </tr>
+          <tr>
+            <th scope="row">WCAG Success Criteria</th>
+            <td id="rr_wcag">-</td>
+          </tr>
+          <tr>
+            <th scope="row">Additional Information</th>
+            <td id="rr_information">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     </div>
 
     <div id="rule_panel">
@@ -162,13 +207,13 @@
 
       <div id="er_tabpanel" role="tabpanel" aria-labelledby="er_tab">
 
-        <table class="grid elements">
+        <table class="grid elements" style="width: 100%">
           <thead>
             <tr>
-              <th>Element</th>
-              <th>Result</th>
-              <th>Pos.</th>
-              <th>Action</th>
+              <th class="text element" >Element</th>
+              <th class="value result" >Result</th>
+              <th class="num position" >Pos.</th>
+              <th class="text action" >Action</th>
             </tr>
           </thead>
           <tbody id="element_results">
