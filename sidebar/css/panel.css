@@ -218,6 +218,12 @@ table.rules tbody td.required {
   text-align: center;
 }
 
+// Rule result
+
+div#da_tabpanel {
+
+}
+
 table.elements {
   width: 200px;
   table-layout: fixed;
@@ -277,13 +283,7 @@ table.elements tbody td.action {
 }
 
 
-
-table.details_action {
-  margin: 0;
-  padding: 0;
-}
-
-tbody.rule_results_details {
+.details_action {
   margin: 0;
   padding: 0;
   border: 1px solid #ccc;
@@ -293,7 +293,35 @@ tbody.rule_results_details {
   height: 150px;
 }
 
-table.details_action th,
-table.details_action td {
-  text-align: left;
+.details_action h3 {
+  margin: 0;
+  padding: 0;
+  padding-bottom: 0.125em;
+  font-size: 100%;
+}
+
+.details_action p {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 1em;
+}
+
+.details_action ul {
+  margin: 0;
+  padding-left: 1.25em;
+  margin-bottom: 1em;
+}
+
+.details_action ul li {
+  margin: 0;
+  padding: 0;
+  padding-bottom: 0.25em;
+}
+
+div#da_tabpanel  {
+  padding-top: 1em;
+}
+
+div#da_tabpanel .details_action {
+  height: 400px;
 }
