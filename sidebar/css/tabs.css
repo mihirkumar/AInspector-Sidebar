@@ -11,7 +11,7 @@ ul[role='tablist'] li {
   float: left;
   padding: 0.5em 1em 0.5em 1em;
   background-color: #CCC;
-  border: thin solid #DDD;
+  border: thin solid #444;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   font-size: 110%;

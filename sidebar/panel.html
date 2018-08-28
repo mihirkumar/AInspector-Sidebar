@@ -47,14 +47,14 @@
       </ul>
 
       <div id="rc_tabpanel" role="tabpanel" aria-labelledby="rc_tab">
-        <table class="grid summary">
+        <table class="grid categories">
           <thead>
             <tr>
-              <th class="text">Category</th>
-              <th class="num">V</th>
-              <th class="num">W</th>
-              <th class="num">MC</th>
-              <th class="num">P</th>
+              <th class="text category">Category</th>
+              <th class="num result">V</th>
+              <th class="num result">W</th>
+              <th class="num result">MC</th>
+              <th class="num result">P</th>
             </tr>
           </thead>
           <tbody id="rc_results">
@@ -63,18 +63,25 @@
       </div>
 
       <div id="gl_tabpanel" role="tabpanel" aria-labelledby="gl_tab" style="display: none">
-        <table class="grid summary">
+        <table class="grid categories">
           <thead>
             <tr>
-              <th class="text">Category</th>
-              <th class="num">V</th>
-              <th class="num">W</th>
-              <th class="num">MC</th>
-              <th class="num">P</th>            </tr>
+              <th class="text category">WCAG Guideline</th>
+              <th class="num result">V</th>
+              <th class="num result">W</th>
+              <th class="num result">MC</th>
+              <th class="num result">P</th>
+            </tr>
           </thead>
           <tbody id="gl_results">
           </tbody>
         </table>
+      </div>
+
+      <div class="selected_group">
+        <div class="right">
+          <button id="details_group">Details <span aria-hidden="true" stlye="padding-left: 0.25em">&#10148;</span></button>
+        </div>
       </div>
 
     </div>
@@ -114,35 +121,41 @@
       <div class="selected_rule">
         <h2>Selected Rule</h2>
         <div class="right">
-          <button id="details">Details <span aria-hidden="true" stlye="padding-left: 0.25em">&#10148;</span></button>
+          <button id="details_rule">Details <span aria-hidden="true" stlye="padding-left: 0.25em">&#10148;</span></button>
         </div>
       </div>
 
       <div class="details_action">
 
-        <h3>Definition</h3>
-        <p id="rr_definition">-</p>
+        <div id="rr_none_selected">
+          nothing selected
+        </div>
 
-        <h3>Action</h3>
-        <p id="rr_action">-</p>
+        <div id="rr_rule_selected" style="display: none">
+          <h3>Definition</h3>
+          <p id="rr_definition">-</p>
 
-        <h3>Purpose</h3>
-        <p id="rr_purpose">-</p>
+          <h3>Action</h3>
+          <p id="rr_action">-</p>
 
-        <h3>Techniques</h3>
-        <p id="rr_techniques">-</p>
+          <h3>Purpose</h3>
+          <p id="rr_purpose">-</p>
 
-        <h3>Target Elements</h3>
-        <p id="rr_target_elements">-</p>
+          <h3>Techniques</h3>
+          <p id="rr_techniques">-</p>
 
-        <h3>Compliance</h3>
-        <p id="rr_compliance">WCAG 2.0 Level A; Required | Recommended</p>
+          <h3>Target Elements</h3>
+          <p id="rr_target_elements">-</p>
 
-        <h3>WCAG Success Criteria</h3>
-        <p id="rr_wcag">-</p>
+          <h3>Compliance</h3>
+          <p id="rr_compliance">WCAG 2.0 Level A; Required | Recommended</p>
 
-        <h3>Additional Information</h3>
-        <p id="rr_information">-</p>
+          <h3>WCAG Success Criteria</h3>
+          <p id="rr_wcag">-</p>
+
+          <h3>Additional Information</h3>
+          <p id="rr_information">-</p>
+        </div>
       </div>
 
     </div>
@@ -157,29 +170,37 @@
       <div id="da_tabpanel" role="tabpanel" aria-labelledby="da_tab" style="display: none">
 
         <div class="details_action">
-          <h3>Definition</h3>
-          <p id="da_definition">-</p>
+          <div id="da_none_selected">
+            nothing selected
+          </div>
 
-          <h3>Action</h3>
-          <p id="da_action">-</p>
+          <div id="da_rule_selected" style="display: none">
 
-          <h3>Purpose</h3>
-          <p id="da_purpose">-</p>
+            <h3>Definition</h3>
+            <p id="da_definition">-</p>
 
-          <h3>Techniques</h3>
-          <p id="da_techniques">-</p>
+            <h3>Action</h3>
+            <p id="da_action">-</p>
 
-          <h3>Target Elements</h3>
-          <p id="da_target_elements">-</p>
+            <h3>Purpose</h3>
+            <p id="da_purpose">-</p>
 
-          <h3>Compliance</h3>
-          <p id="da_compliance">WCAG 2.0 Level A; Required | Recommended</p>
+            <h3>Techniques</h3>
+            <p id="da_techniques">-</p>
 
-          <h3>WCAG Success Criteria</h3>
-          <p id="da_wcag">-</p>
+            <h3>Target Elements</h3>
+            <p id="da_target_elements">-</p>
 
-          <h3>Additional Information</h3>
-          <p id="da_information">-</p>
+            <h3>Compliance</h3>
+            <p id="da_compliance">WCAG 2.0 Level A; Required | Recommended</p>
+
+            <h3>WCAG Success Criteria</h3>
+            <p id="da_wcag">-</p>
+
+            <h3>Additional Information</h3>
+            <p id="da_information">-</p>
+
+          </div>
         </div>
       </div>
 
