@@ -24,7 +24,7 @@
     "content_scripts": [
         {
           "matches": ["<all_urls>"],
-          "js": ["pageContext.js", "openajax/openajax_a11y/export/scripts/oaa_a11y_evaluation.js", "openajax/openajax_a11y/export/scripts/oaa_a11y_rules.js", "openajax/openajax_a11y/export/scripts/oaa_a11y_rulesets.js"]
+          "js": ["pageContext.js", "scripts/oaa_a11y_evaluation.js", "scripts/oaa_a11y_rules.js", "scripts/oaa_a11y_rulesets.js"]
         }
     ]
 
