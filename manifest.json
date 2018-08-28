@@ -11,7 +11,7 @@
       "default_panel": "sidebar/panel.html"
     },
 
-    "permissions": ["storage", "activeTab", "tabs"],
+    "permissions": ["storage", "activeTab", "tabs", "contextMenus"],
 
     "commands": {
       "_execute_sidebar_action": {

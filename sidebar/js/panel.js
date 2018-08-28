@@ -1,7 +1,7 @@
 "use strict";
 
 function onError(error) {
-  console.error(`Error: ${error}`);
+//  console.error(`Error: ${error}`);
 }
 
 browser.runtime.onMessage.addListener(notify);
@@ -10,7 +10,19 @@ function notify(message) {
   if (message.messageForPanel) {
     changePanelElements(message.messageForPanel);
   }
-}
+};
+
+browser.contextMenus.create({
+  id: "ainspector",
+  title: "Run ARIA evaluation",
+  contexts: ["all"],
+});
+
+browser.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "ainspector") {
+    evaluateButton.click();
+  }
+});
 
 function changePanelElements(evaluationResult) {
 
@@ -113,10 +125,6 @@ function handleGetRule(ruleId, position) {
       currentWindow: true,
       active: true
   }).then(sendMessageToTabs).catch(onError);
-};
-
-function handleUpdateDetailsAction(ruleId) {
-
 };
 
 // Add event handlers
