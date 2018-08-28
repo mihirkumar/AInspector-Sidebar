@@ -80,7 +80,7 @@
 
       <div class="selected_group">
         <div class="right">
-          <button id="details_group">Details <span aria-hidden="true" stlye="padding-left: 0.25em">&#10148;</span></button>
+          <button id="details_group" disabled>Details <span aria-hidden="true" stlye="padding-left: 0.25em">&#10148;</span></button>
         </div>
       </div>
 
@@ -170,12 +170,6 @@
       <div id="da_tabpanel" role="tabpanel" aria-labelledby="da_tab" style="display: none">
 
         <div class="details_action">
-          <div id="da_none_selected">
-            nothing selected
-          </div>
-
-          <div id="da_rule_selected" style="display: none">
-
             <h3>Definition</h3>
             <p id="da_definition">-</p>
 
@@ -200,7 +194,6 @@
             <h3>Additional Information</h3>
             <p id="da_information">-</p>
 
-          </div>
         </div>
       </div>
 
@@ -218,6 +211,20 @@
           <tbody id="element_results">
           </tbody>
         </table>
+
+        <div class="selected_group">
+            <button id="dom_inspector" disabled>Inspect Element</button>
+          <div class="right">
+            <label for="highlight">Highlight</label>
+            <select id="highlight">
+              <option id="none">None</option>
+              <option id="selected">Selected</option>
+              <option id="vw">V/W</option>
+              <option if="all">All</option>
+            </select>
+          </div>
+        </div>
+
       </div>
 
     </div>
