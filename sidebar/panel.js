@@ -3,19 +3,28 @@
 var evaluateButton = document.getElementById('evaluate');
 var radios = document.forms["Persistence"].elements["car"];
 
-var storedValue = browser.storage.local.get("car");
-alert(storedValue);
+var storedValue = browser.storage.local.get("tempObj").then(setRadioButton, onError);
 
-// for(var i = 0, max_i = radios.length; i < max; i++) {
-//   radios[i].onclick = function() 
-//     var storedData = {"car": this.value};
-//   }
-// }
+function setRadioButton(item) {
+  var storedCarName = item.tempObj.name;
+
+  if (storedCarName == 'Tesla') {
+    radios[0].checked = true;
+  }
+
+  else if (storedCarName == 'Nissan Leaf') {
+    radios[1].checked = true;
+  }
+
+  else if (storedCarName == 'BMW') {
+    radios[2].checked = true;
+  }
+}
 
 for(var j = 0, max_j = radios.length; j < max_j; j++) {
   radios[j].onclick = function() {
-    browser.storage.local.set({"car": this.value});
-    alert(this.value);
+    var tempObj = {"name": this.value};
+    browser.storage.local.set({tempObj});
   }
 }
 
