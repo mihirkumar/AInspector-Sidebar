@@ -104,15 +104,49 @@ Tablist.prototype.setSelectedToNextTab = function (currentTab, moveFocus) {
   }
 };
 
+Tablist.prototype.setSelectedById = function (tabId, moveFocus) {
+  if (typeof moveFocus != 'boolean') {
+    moveFocus = false;
+  }
+
+  var index;
+
+  var currentTab = this.firstTab;
+
+  for (let i = 0 ; i < this.tabs.length; i++) {
+    if (this.tabs[i].id === tabId) {
+      currentTab = this.tabs[i];
+      break;
+    }
+  }
+
+  if (typeof currentTab !== 'object') {
+    currentTab = this.currentTab;
+  }
+
+  if (currentTab === this.lastTab) {
+    this.setSelected(this.firstTab, moveFocus);
+  }
+  else {
+    index = this.tabs.indexOf(currentTab);
+    this.setSelected(this.tabs[index + 1], moveFocus);
+  }
+};
+
 
 /* Initialize Tablists */
+
+var summaryTablist;
 
 window.addEventListener('load', function (event) {
   var Tablists = document.querySelectorAll('[role=tablist]');
 
   for (var i = 0; i < Tablists.length; i++) {
     var ctl = new Tablist(Tablists[i]);
-
     ctl.init();
+    if (i === 0) {
+      summaryTablist = ctl;
+    }
   }
 }, false);
+

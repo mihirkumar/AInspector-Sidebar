@@ -38,16 +38,15 @@ function showSummaryPanel() {
   show('summary_panel');
 }
 
-function addGroupResultRow(id, label, v, w, mc, p) {
-  var html = '<tr>'
-  html += '  <th class="text category"><a href="#" id="' + id + '">' + label + '</a></th>';
-  html += '  <td class="num result">' + v     + '</td>';
-  html += '  <td class="num result">' + w     + '</td>';
-  html += '  <td class="num result">' + mc    + '</td>';
-  html += '  <td class="num result">' + p     + '</td>';
-  html += '</tr>'
+function addGroupResultRow(grid, id, label, v, w, mc, p) {
 
-  return html;
+  var row = grid.addRow(id, handleSummaryPanelAction);
+
+  row.addCell(label, 'text category', '', true);
+  row.addCell(v,  'num result');
+  row.addCell(w,  'num result');
+  row.addCell(mc, 'num result');
+  row.addCell(p,  'num result');
 }
 
 function clearSummaryPanel() {
@@ -59,17 +58,16 @@ function clearSummaryPanel() {
 
   // Update Group Results
 
-  var html = '';
+  rcGrid.clearRows();
   for (let i = 0; i < rcOptions.length; i++) {
-    html += addGroupResultRow('', rcOptions[i].label, '-', '-', '-', '-');
+    addGroupResultRow(rcGrid, '', rcOptions[i].label, '-', '-', '-', '-');
   }
-  document.getElementById("rc_results").innerHTML = html;
 
-  html = '';
+
+  glGrid.clearRows();
   for (let i = 0; i < glOptions.length; i++) {
-    html += addGroupResultRow('', glOptions[i].label, '-', '-', '-', '-');
+    addGroupResultRow(glGrid, '', glOptions[i].label, '-', '-', '-', '-');
   }
-  document.getElementById("gl_results").innerHTML = html;
 
 }
 
@@ -83,28 +81,42 @@ function updateSummaryPanel(evaluationResult) {
 
   // Update Group Results
 
-  function updateGroupResults(group_id, groupResults) {
-    var html = '';
-    var node = document.getElementById(group_id + '_results');
+  function updateGroupResults(group, groupResults) {
+
+    var grid = rcGrid;
+
+    if (group === 'gl') {
+      grid = glGrid;
+    }
+
+    grid.clearRows();
 
     for (let i = 0; i < groupResults.length; i++) {
       var gr = groupResults[i];
-      html += addGroupResultRow(gr.id, gr.label, gr.violations, gr.warnings, gr.manual_checks, gr.passed);
+      addGroupResultRow(grid, group + '-' + gr.id, gr.label, gr.violations, gr.warnings, gr.manual_checks, gr.passed);
     }
 
-    html += addGroupResultRow(0x0FFF, 'All', evaluationResult.violations, evaluationResult.warnings, evaluationResult.manual_checks, evaluationResult.passed);
-    node.innerHTML = html;
+    addGroupResultRow(grid, group + '-' + 0x0FFF, 'All', evaluationResult.violations, evaluationResult.warnings, evaluationResult.manual_checks, evaluationResult.passed);
 
-    var buttons = node.getElementsByTagName('a');
-
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].addEventListener('click', function (event) {var id = group_id + '-' + event.currentTarget.id; handleGetGroup(id);});
-    }
   }
 
   updateGroupResults('rc', evaluationResult.rcResults);
   updateGroupResults('gl', evaluationResult.glResults);
+
 }
+
+function setSummaryPanelFocus() {
+//  alert(summaryTablist + ' ' + messageArgs.groupType + ' ' + messageArgs.groupId);
+
+  if (messageArgs.groupType === 'rc') {
+    summaryTablist.setSelectedById('rc_tab', false);
+    rcGrid.setFocusToRowById('rc-' + messageArgs.groupId);
+  }
+  else {
+    summaryTablist.setSelectedById('gl_tab', false);
+    glGrid.setFocusToRowById('gl-' + messageArgs.groupId);
+  }
+};
 
 function updateViewMenu() {
   viewMenu.removeAllOptions();
@@ -129,6 +141,27 @@ function updateViewMenu() {
 
   viewMenu.addOption(rcOptions[last].id, 'menuitem', rcOptions[last].label, function() {var id = 'rc-' + rcOptions[last].id; handleGetGroup(id);});
 
-}
+};
 
+function handleSummaryPanelAction(type, id) {
 
+  switch (type) {
+    case 'activate':
+      handleGetGroup(id);
+      break;
+
+    case 'click':
+      break;
+
+    case 'dbclick':
+      break;
+
+    case 'focus':
+      detailsGroupButton.disabled = false;
+      break;
+
+    case 'blur':
+      detailsGroupButton.disabled = true;
+      break;
+  }
+};

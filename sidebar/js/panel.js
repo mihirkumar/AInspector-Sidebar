@@ -14,12 +14,13 @@ function notify(message) {
 
 browser.contextMenus.create({
   id: "ainspector",
-  title: "Run ARIA evaluation",
+  title: "AInspector Sidebar",
   contexts: ["all"],
 });
 
 browser.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "ainspector") {
+    browser.sidebarAction.open();
     evaluateButton.click();
   }
 });
@@ -48,6 +49,7 @@ function changePanelElements(evaluationResult) {
       show('summary_panel');
       updateTitle("Summary");
       updateSummaryPanel(evaluationResult);
+      setSummaryPanelFocus();
       break;
 
     case 'group':
@@ -201,6 +203,24 @@ function handleBack(event) {
 var backButton = document.getElementById('back');
 backButton.addEventListener('click', handleBack);
 
+// Details button for group
+
+function handleDetailsGroup(event) {
+
+  var id = rcGrid.retCurrentId();
+
+  if (!id) {
+    id = glGrid.retCurrentId();
+  }
+
+  if (id) {
+    handleGetGroup(id);
+  }
+};
+
+var detailsGroupButton = document.getElementById('details_group');
+detailsGroupButton.addEventListener('click', handleDetailsGroup);
+
 // Initialize panel
 
 clearSummaryPanel();
@@ -211,3 +231,6 @@ hideGroupPanel();
 hideRulePanel();
 
 backButton.disabled = true;
+detailsGroupButton.disabled = true;
+
+

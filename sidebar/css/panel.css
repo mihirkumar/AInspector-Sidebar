@@ -135,7 +135,6 @@ table.grid td.text {
   text-align: left;
 }
 
-
 table.grid tbody tr:nth-child(even) {
   background: #EEE;
 }
@@ -151,28 +150,48 @@ table.grid tbody td {
   vertical-align: top;
 }
 
-table.grid a,
-table.grid a:focus {
-  font-size: 1em;
-  font-weight: normal;
-  color: black;
-}
-
 table.grid td code {
   font-family: monospace;
   color: #c7254e;
   background-color: #f9f2f4;}
 }
 
-table.categories thead {
+table.grid th,
+tablr.grid td {
+  border-top: 1px solid #F44;
+  border-bottom: 1px solid #F44;
+}
+
+table.grid tr:focus {
+  outline: none;
+}
+
+table.grid tr:focus th,
+table.grid tr:focus td {
+  border-color: #44F;
+  font-weight: bold;
+}
+
+table.categories {
+  width: 400px;
+  table-layout: fixed;
+}
+
+table.categories thead,
+table.categories tbody {
    display: block;
    width: 100%;
 }
 
 table.categories thead th.category,
 table.categories tbody th.category {
-  width: 200px;
-  max-width: 200px;
+  width: 160px;
+  min-width: 160px;
+  max-width: 160px;
+}
+
+table.categories tbody th.category {
+  font-weight: normal;
 }
 
 table.categories thead th.result,
@@ -182,9 +201,11 @@ table.categories tbody td.result {
   padding-right:25px;
 }
 
+
 table.categories tbody tr:last-child th,
 table.categories tbody tr:last-child td {
   border-top: 1px solid #AAA;
+  font-weight: bold;
 }
 
 // Group results CSS
