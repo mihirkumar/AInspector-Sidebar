@@ -203,23 +203,9 @@ function handleBack(event) {
 var backButton = document.getElementById('back');
 backButton.addEventListener('click', handleBack);
 
-// Details button for group
 
-function handleDetailsGroup(event) {
 
-  var id = rcGrid.retCurrentId();
 
-  if (!id) {
-    id = glGrid.retCurrentId();
-  }
-
-  if (id) {
-    handleGetGroup(id);
-  }
-};
-
-var detailsGroupButton = document.getElementById('details_group');
-detailsGroupButton.addEventListener('click', handleDetailsGroup);
 
 // Initialize panel
 

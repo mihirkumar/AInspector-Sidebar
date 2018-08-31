@@ -11,15 +11,14 @@ function showGroupPanel() {
 }
 
 function addRuleResultRow(rule_id, summary, result, wcag, level, required) {
-  var html = '<tr>'
-  html += '  <th class="text rule"><a href="#" id="' + rule_id + '">' + summary + '</a></th>';
-  html += '  <td class="value result '    + result.toLowerCase() + '">' + result + '</td>';
-  html += '  <td class="value sc">'       + wcag  + '</td>';
-  html += '  <td class="value level">'    + level + '</td>';
-  html += '  <td class="value required">' + (required ? 'Y' : '') + '</td>';
-  html += '</tr>'
+  var row = groupGrid.addRow(rule_id, handleGroupGridAction);
 
-  return html;
+  row.addCell(summary, 'text rule', '', true);
+  row.addCell(result,  'value result' + result.toLowerCase(), result);
+  row.addCell(level,    'value sc', level);
+  row.addCell(level,   'value level', level);
+  row.addCell((required ? 'Y' : ''), 'value required', (required ? 'Y' : ''));
+
 }
 
 function clearGroupPanel() {
@@ -32,7 +31,6 @@ function clearGroupPanel() {
 
   // Update Group Results
 
-  var html = '';
   var cells = document.querySelectorAll('tbody#rule_results td');
 
   for (let i = 0; i < cells.length; i++) {
@@ -66,16 +64,14 @@ function updateGroupPanel(evaluationResult) {
 
   // Update Group Results
 
-  var html = '';
-  var node = document.getElementById("rule_results");
-
   var ruleResults = evaluationResult.ruleResults;
 
   for (let i = 0; i < ruleResults.length; i++) {
     var rr = ruleResults[i];
-    html += addRuleResultRow(rr.ruleId, rr.summary, rr.result, rr.wcag, rr.level, rr.required);
+    addRuleResultRow(rr.ruleId, rr.summary, rr.result, rr.wcag, rr.level, rr.required);
   }
 
+/*
   node.innerHTML = html;
 
   var buttons = node.getElementsByTagName('a');
@@ -86,7 +82,40 @@ function updateGroupPanel(evaluationResult) {
     buttons[i].addEventListener('focus', function (event) {var da = getDetailsAction(ruleResults, event.currentTarget.id); updateDetailsAction('rr', da);});
     buttons[i].addEventListener('mouseover', function (event) {var da = getDetailsAction(ruleResults, event.currentTarget.id); updateDetailsAction('rr', da);});
   }
-
+*/
 }
 
+function handleGroupGridAction(type, ruleId) {
 
+
+  switch (type) {
+    case 'activate':
+      handleGetRule(ruleId)
+      break;
+
+    case 'click':
+      break;
+
+    case 'doubleClick':
+      break;
+
+    case 'focus':
+      detailsRuleButton.disabled = false;
+      break;
+
+  }
+};
+
+// Details Rule Button
+
+function handleDetailsRule(event) {
+
+  var id = groupGrid.getSelectedId();
+
+  if (id) {
+    handleGetRule(id);
+  }
+};
+
+var detailsRuleButton = document.getElementById('details_rule');
+detailsRuleButton.addEventListener('click', handleDetailsRule);

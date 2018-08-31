@@ -10,6 +10,7 @@
 var Tab = function (domNode, groupObj) {
   this.domNode = domNode;
   this.tablist = groupObj;
+  this.id = this.domNode.id;
 
   this.tabpanelDomNode = null;
 

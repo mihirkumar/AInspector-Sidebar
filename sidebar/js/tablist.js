@@ -45,6 +45,10 @@ Tablist.prototype.init = function () {
   this.currentTab = this.firstTab;
 };
 
+Tablist.prototype.getSelectedTabId = function () {
+  return this.currentTab.id;
+};
+
 Tablist.prototype.setSelected = function (newTab, moveFocus) {
   if (typeof moveFocus != 'boolean') {
     moveFocus = false;
@@ -120,17 +124,8 @@ Tablist.prototype.setSelectedById = function (tabId, moveFocus) {
     }
   }
 
-  if (typeof currentTab !== 'object') {
-    currentTab = this.currentTab;
-  }
+  this.setSelected(currentTab, moveFocus);
 
-  if (currentTab === this.lastTab) {
-    this.setSelected(this.firstTab, moveFocus);
-  }
-  else {
-    index = this.tabs.indexOf(currentTab);
-    this.setSelected(this.tabs[index + 1], moveFocus);
-  }
 };
 
 

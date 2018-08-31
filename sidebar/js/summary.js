@@ -106,15 +106,15 @@ function updateSummaryPanel(evaluationResult) {
 }
 
 function setSummaryPanelFocus() {
-//  alert(summaryTablist + ' ' + messageArgs.groupType + ' ' + messageArgs.groupId);
-
   if (messageArgs.groupType === 'rc') {
     summaryTablist.setSelectedById('rc_tab', false);
-    rcGrid.setFocusToRowById('rc-' + messageArgs.groupId);
+    rcGrid.setSelectedToRowById('rc-' + messageArgs.groupId);
+    glGrid.setSelectedToRowById();
   }
   else {
     summaryTablist.setSelectedById('gl_tab', false);
-    glGrid.setFocusToRowById('gl-' + messageArgs.groupId);
+    glGrid.setSelectedToRowById('gl-' + messageArgs.groupId);
+    rcGrid.setSelectedToRowById();
   }
 };
 
@@ -145,6 +145,7 @@ function updateViewMenu() {
 
 function handleSummaryPanelAction(type, id) {
 
+
   switch (type) {
     case 'activate':
       handleGetGroup(id);
@@ -153,15 +154,37 @@ function handleSummaryPanelAction(type, id) {
     case 'click':
       break;
 
-    case 'dbclick':
+    case 'doubleClick':
+      handleGetGroup(id);
       break;
 
     case 'focus':
       detailsGroupButton.disabled = false;
       break;
 
-    case 'blur':
-      detailsGroupButton.disabled = true;
-      break;
   }
 };
+
+// Details button for group
+
+function handleDetailsGroup(event) {
+
+  var id;
+
+  switch (summaryTablist.getSelectedTabId()) {
+    case 'gl_tab':
+      id = glGrid.getSelectedId();
+      break;
+
+    default:
+      id = rcGrid.getSelectedId();
+      break;
+  }
+
+  if (id) {
+    handleGetGroup(id);
+  }
+};
+
+var detailsGroupButton = document.getElementById('details_group');
+detailsGroupButton.addEventListener('click', handleDetailsGroup);

@@ -21,17 +21,18 @@ var Grid = function (domNode, allowHeaderNavigation) {
   this.allowHeaderNavigation = allowHeaderNavigation;
   this.cellNavigation = true;
 
-  this.currentId = '';
+  this.selectedId = '';
   this.currentIndex = 0;
+  this.firstRowIndex = -1;
+  this.lastRowIndex = -1;
 
   this.rows = [];
-
-  this.firstRow = false;
-  this.lastRow = false;
 
 };
 
 Grid.prototype.init = function () {
+
+
   this.domNode.tabIndex = -1;
 
   var theadNode = this.domNode.querySelector('thead');
@@ -45,15 +46,10 @@ Grid.prototype.init = function () {
       var gridRow = new GridRow(trNode, this, '', false, true);
       gridRow.init();
 
-//      alert('[gridRow]: ' + gridRow);
-
       var thNodes = trNode.querySelectorAll('th');
-
-//      alert('[thNodes]: ' + thNodes);
 
       for(let i = 0; i < thNodes.length; i++) {
         var gridCell = new GridCell(thNodes[i], true);
-//        alert('[gridCell]: ' + gridCell);
         gridRow.addGridCell(gridCell);
       }
 
@@ -110,12 +106,12 @@ Grid.prototype.addRow = function (id, action, thead) {
   for (let i = 0; i < this.rows.length; i++) {
     var row = this.rows[i];
     row.index = i;
-    if (!this.firstRow &&
+    if ((this.firstRowIndex < 0) &&
         ((row.isThead && this.allowHeaderNavigation) ||
           !row.isThead)) {
-      this.firstRow = row;
+      this.firstRowIndex = i;
     }
-    this.lastRow = row;
+    this.lastRowIndex = i;
   }
 
   return gridRow;
@@ -136,68 +132,69 @@ Grid.prototype.clearRows = function (header) {
   }
 };
 
-Grid.prototype.setCurrentId = function (id) {
-  this.currentId = id;
-}
+Grid.prototype.setSelectedId = function (id) {
+  this.selectedId = id;
+};
 
-Grid.prototype.resetCurrentId = function () {
-  this.currentId = '';
-}
+Grid.prototype.getSelectedId = function () {
+  return this.selectedId;
+};
 
-Grid.prototype.getCurrentId = function () {
-  return this.currentId;
-}
-
-Grid.prototype.setFocusToRowById = function (id) {
-
+Grid.prototype.setSelectedToRowById = function (id) {
   var flag = true;
 
   for(let i = 0; i < this.rows.length; i++) {
     var row = this.rows[i];
-    row.removeFocus();
+    row.removeSelected();
     if (row.id === id) {
-      row.setFocus();
+      row.setSelected();
       flag = false;
     }
   }
 
   if (flag) {
-    this.firstRow.setFocus();
+    this.rows[this.firstRowIndex].setSelected();
   }
 
 }
 
-Grid.prototype.setFocusToRow = function (index) {
+Grid.prototype.setSelectedToRow = function (index) {
 
   for(let i = 0; i < this.rows.length; i++) {
-    this.row[i].removeFocus();
+    this.rows[i].removeSelected();
   }
 
-  if (this.row[i]) {
-    this.row[i].setFocus();
+  if (this.rows[index]) {
+    this.rows[index].setSelected();
   }
   else {
-    this.firstRow.setFocus();
+    this.rows[this.firstRowIndex].setSelected();
   }
 
-}
+};
+
+Grid.prototype.moveFocusToFirstRow = function () {
+  this.setSelectedToRow(this.firstRowIndex);
+};
+
+Grid.prototype.moveFocusToLastRow = function () {
+  this.setSelectedToRow(this.lastRowIndex);
+};
 
 Grid.prototype.moveFocusToPreviousRow = function () {
-  if (this.currentIndex  > 1) {
-    if ((this.rows(this.currentIndex-1).isThead && this.allowHeaderNavigation) ||
-      !this.rows(this.currentIndex-1).isThead) {
-      this.currentIndex += -1;
-      this.rows(this.currentIndex).setFocus();
+  if (this.currentIndex > 1) {
+    var newRow = this.rows[this.currentIndex-1];
+    if ((newRow.isThead && this.allowHeaderNavigation) ||
+      !newRow.isThead) {
+      this.setSelectedToRow(this.currentIndex-1);
     }
   }
 };
 
 Grid.prototype.moveFocusToNextRow = function () {
-  this.currentIndex + 1;
-  if (this.currentIndex >= this.rows.length) {
-    this.currentIndex = this.rows.length-1;
+  if (this.currentIndex < this.lastRowIndex) {
+    this.setSelectedToRow(this.currentIndex+1);
   }
-  this.rows(this.currentIndex).setFocus();
 };
 
 Grid.prototype.moveFocusToFirstCell = function () {
@@ -232,24 +229,27 @@ var GridRow = function (domNode, grid, id, action, thead) {
   this.cells = [];
 
   this.keyCode = Object.freeze({
-    'RETURN': 13,
-    'SPACE': 32,
-    'END': 35,
-    'HOME': 36,
-    'LEFT': 37,
-    'UP': 38,
-    'RIGHT': 39,
-    'DOWN': 40
+    'RETURN'   : 13,
+    'SPACE'    : 32,
+    'PAGE_UP'  : 33,
+    'PAGE_DOWN': 34,
+    'END'      : 35,
+    'HOME'     : 36,
+    'LEFT'     : 37,
+    'UP'       : 38,
+    'RIGHT'    : 39,
+    'DOWN'     : 40
   });
 };
 
 GridRow.prototype.init = function () {
   this.domNode.tabIndex = -1;
 
-  this.domNode.addEventListener('keydown', this.handleKeydown.bind(this));
-  this.domNode.addEventListener('click', this.handleClick.bind(this));
-  this.domNode.addEventListener('focus', this.handleFocus.bind(this));
-  this.domNode.addEventListener('blur', this.handleBlur.bind(this));
+  this.domNode.addEventListener('keydown',  this.handleKeydown.bind(this));
+  this.domNode.addEventListener('click',    this.handleClick.bind(this));
+  this.domNode.addEventListener('dblclick', this.handleDoubleClick.bind(this));
+  this.domNode.addEventListener('focus',    this.handleFocus.bind(this));
+  this.domNode.addEventListener('blur',     this.handleBlur.bind(this));
 };
 
 GridRow.prototype.addCell = function (content, type, sort, header) {
@@ -294,14 +294,16 @@ GridRow.prototype.remove = function () {
   this.domNode.remove();
 };
 
-GridRow.prototype.removeFocus = function () {
+GridRow.prototype.removeSelected = function () {
   this.domNode.tabIndex = -1;
+  this.domNode.setAttribute('aria-selected', 'false');
 };
 
-GridRow.prototype.setFocus = function () {
+GridRow.prototype.setSelected = function () {
   this.domNode.focus();
   this.domNode.tabIndex = 0;
   this.grid.currentIndex = this.index;
+  this.domNode.setAttribute('aria-selected', 'true');
 };
 
 
@@ -320,10 +322,22 @@ GridRow.prototype.handleKeydown = function (event) {
       break;
 
     case this.keyCode.UP:
+      this.grid.moveFocusToPreviousRow();
       flag = true;
       break;
 
     case this.keyCode.DOWN:
+      this.grid.moveFocusToNextRow();
+      flag = true;
+      break;
+
+    case this.keyCode.HOME:
+      this.grid.moveFocusToFirstRow();
+      flag = true;
+      break;
+
+    case this.keyCode.END:
+      this.grid.moveFocusToLastRow();
       flag = true;
       break;
 
@@ -347,9 +361,15 @@ GridRow.prototype.handleClick = function (event) {
   }
 };
 
+GridRow.prototype.handleDoubleClick = function (event) {
+  if (this.action) {
+    this.action("doubleClick", this.id);
+  }
+};
+
 GridRow.prototype.handleFocus = function (event) {
   this.domNode.classList.add('focus');
-  this.grid.setCurrentId(this.id);
+  this.grid.setSelectedId(this.id);
   if (this.action) {
     this.action("focus", this.id);
   }
@@ -357,7 +377,6 @@ GridRow.prototype.handleFocus = function (event) {
 
 GridRow.prototype.handleBlur = function (event) {
   this.domNode.classList.remove('focus');
-  this.grid.resetCurrentId();
   if (this.action) {
     this.action("blur", this.id);
   }
@@ -377,7 +396,6 @@ var GridCell = function (domNode, gridRow, header) {
 
   this.domNode = domNode;
   this.gridRow = gridRow;
-
   this.isHeader = header;
 
 
@@ -446,14 +464,15 @@ GridCell.prototype.handleBlur = function (event) {
 
 };
 
-
 var grids = document.querySelectorAll('.grid');
-
 
 var rcGrid = new Grid(grids[0]);
 rcGrid.init();
 
 var glGrid = new Grid(grids[1]);
 glGrid.init();
+
+var groupGrid = new Grid(grids[2]);
+groupGrid.init();
 
 // alert(rcGrid + '\n' + glGrid);
