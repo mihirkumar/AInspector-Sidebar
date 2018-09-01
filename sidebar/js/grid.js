@@ -243,11 +243,6 @@ var GridRow = function (domNode, grid, id, action, thead) {
 };
 
 GridRow.prototype.init = function () {
-  if ((this.isThead && this.grid.allowHeaderNavigation) ||
-      !this.isThead) {
-    this.domNode.tabIndex = -1;
-  }
-
   this.domNode.addEventListener('keydown',  this.handleKeydown.bind(this));
   this.domNode.addEventListener('click',    this.handleClick.bind(this));
   this.domNode.addEventListener('dblclick', this.handleDoubleClick.bind(this));
@@ -359,6 +354,7 @@ GridRow.prototype.handleKeydown = function (event) {
 };
 
 GridRow.prototype.handleClick = function (event) {
+  this.grid.setSelectedToRowById(this.id);
   if (this.action) {
     this.action("click", this.id);
   }
@@ -467,15 +463,16 @@ GridCell.prototype.handleBlur = function (event) {
 
 };
 
-var grids = document.querySelectorAll('.grid');
-
-var rcGrid = new Grid(grids[0]);
+var rcGrid = new Grid(document.getElementById('rc_grid'));
 rcGrid.init();
 
-var glGrid = new Grid(grids[1]);
+var glGrid = new Grid(document.getElementById('gl_grid'));
 glGrid.init();
 
-var groupGrid = new Grid(grids[2]);
+var groupGrid = new Grid(document.getElementById('group_grid'));
 groupGrid.init();
 
-// alert(rcGrid + '\n' + glGrid);
+var ruleGrid = new Grid(document.getElementById('rule_grid'));
+ruleGrid.init();
+
+// alert(rcGrid + '\n' + glGrid + '\n' + glGrid + '\n' + ruleGrid);

@@ -169,9 +169,16 @@ table.grid tr:focus {
   outline: none;
 }
 
-table.grid thead tr[aria-selected="true"] th:before,
-table.grid tbody tr[aria-selected="true"] th:before {
-  content: '> ';
+table.grid thead tr th:first-child,
+table.grid tbody tr th:first-child {
+  padding-left: 1em;
+}
+
+table.grid thead tr[aria-selected="true"] th,
+table.grid tbody tr[aria-selected="true"] th {
+  background-image:  url(grid-row-selected.svg);
+  background-repeat: no-repeat;
+  background-position: left center;
 }
 
 table.grid thead tr:focus th,
@@ -297,6 +304,7 @@ table.elements thead th.element {
 table.elements tbody th.element {
   width: 125px;
   max-width: 125px;
+  font-weight: normal;
 }
 
 table.elements thead th.result {
@@ -312,11 +320,13 @@ table.elements tbody td.result {
 table.elements thead th.position {
   width: 40px;
   max-width: 40px;
+  padding-right: 0.5em;
 }
 
 table.elements tbody td.position {
   width: 40px;
   max-width: 40px;
+  padding-right: 0.5em;
 }
 
 table.elements thead th.action {

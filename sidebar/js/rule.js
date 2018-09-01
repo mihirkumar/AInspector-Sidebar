@@ -10,25 +10,14 @@ function showRulePanel() {
 
 function addElementResultRow(element, result, position, actionMessage) {
 
-  var e = element;
-  if (element.length > 25) {
-    e = element.substring(0, 23) + '... ';
-  }
+  var row = ruleGrid.addRow(position, handleRuleGridAction);
 
-  var html = '<tr>'
-  if (e === element) {
-    html += '  <th class="text element"><a href="#" id="' + position + '">' + e + '</a></th>';
-  }
-  else {
-    html += '  <th class="text element"><a href="#" id="' + position + '" title="' + element + '">' + e + '</a></th>';
-  }
-  html += '  <td class="value result ' + result.toLowerCase() + '">' + result + '</td>';
-  html += '  <td class="num position">' + position + '</td>';
-  html += '  <td class="text action">' + actionMessage  + '</td>';
-  html += '</tr>'
+  row.addCell(element, 'text element', '', true);
+  row.addCell(result, 'value result ' + result.toLowerCase());
+  row.addCell(position, 'num position');
+  row.addCell(actionMessage, 'text action');
 
-  return html;
-}
+};
 
 function clearRulePanel() {
 
@@ -38,6 +27,7 @@ function clearRulePanel() {
   for (let i = 0; i < cells.length; i++) {
     cells[i].innerHTML = '-';
   }
+
 }
 
 function updateDetailsAction(id, detailsAction) {
@@ -73,7 +63,6 @@ function updateDetailsAction(id, detailsAction) {
 
   }
 
-
   document.getElementById(id + '_definition').innerHTML      = getDetails(detailsAction.definition);
   document.getElementById(id + '_action').innerHTML          = getDetails(detailsAction.action);
   document.getElementById(id + '_purpose').innerHTML         = getDetails(detailsAction.purpose);
@@ -83,29 +72,49 @@ function updateDetailsAction(id, detailsAction) {
   document.getElementById(id + '_wcag').innerHTML            = getDetails(detailsAction.wcagPrimary);
   document.getElementById(id + '_information').innerHTML     = getDetails(detailsAction.informationalLinks);
 
+  if (id === 'rr') {
+    document.getElementById('rr_none_selected').style.display = 'none';
+    document.getElementById('rr_rule_selected').style.display = 'block';
+  }
+
 }
 
 function updateRulePanel(evaluationResult) {
 
   updateDetailsAction('da', evaluationResult.detailsAction);
 
-  var html = '';
-  var node = document.getElementById('element_results');
-
   var elementResults = evaluationResult.elementResults;
+
+  ruleGrid.clearRows();
 
   for (let i = 0; i < elementResults.length; i++) {
     var er = elementResults[i];
-    html += addElementResultRow(er.element, er.result, er.position, er.actionMessage);
+    addElementResultRow(er.element, er.result, er.position, er.actionMessage);
   }
 
-  node.innerHTML = html;
-
-  var buttons = node.getElementsByTagName('a');
-
-  var ruleId = messageArgs.ruleId;
-
+/*
   for (let i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', function (event) {var pos = parseInt(event.currentTarget.id); handleGetRule(ruleId, pos);});
   }
-}
+*/
+};
+
+function handleRuleGridAction(type, positionId) {
+
+  switch (type) {
+    case 'activate':
+      handleGetRule(messageArgs.ruleId, positionId);
+      break;
+
+    case 'click':
+      break;
+
+    case 'doubleClick':
+      handleGetRule(messageArgs.ruleId, positionId);
+      break;
+
+    case 'focus':
+      break;
+
+  }
+};

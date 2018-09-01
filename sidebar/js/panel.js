@@ -56,6 +56,7 @@ function changePanelElements(evaluationResult) {
       show('group_panel');
       updateTitle(evaluationResult.groupLabel);
       updateGroupPanel(evaluationResult);
+      setGroupPanelFocus();
       break;
 
     case 'rule':
@@ -202,8 +203,6 @@ function handleBack(event) {
 
 var backButton = document.getElementById('back');
 backButton.addEventListener('click', handleBack);
-
-
 
 
 

@@ -14,7 +14,7 @@ function addRuleResultRow(rule_id, summary, result, wcag, level, required) {
   var row = groupGrid.addRow(rule_id, handleGroupGridAction);
 
   row.addCell(summary, 'text rule', '', true);
-  row.addCell(result,  'value result' + result.toLowerCase(), result);
+  row.addCell(result,  'value result ' + result.toLowerCase(), result);
   row.addCell(level,    'value sc', level);
   row.addCell(level,   'value level', level);
   row.addCell((required ? 'Y' : ''), 'value required', (required ? 'Y' : ''));
@@ -39,22 +39,9 @@ function clearGroupPanel() {
 
 }
 
+var ruleResults = [];
+
 function updateGroupPanel(evaluationResult) {
-
-  function getDetailsAction(ruleResults, ruleId) {
-
-    var da = ruleResults[0].detailsAction;
-
-    for (let i = 0; i < ruleResults.length; i++) {
-      if (ruleResults[i].ruleId === ruleId) {
-        da = ruleResults[i].detailsAction;
-        return da;
-      }
-    }
-
-    return da;
-  }
-
 
   // update Rule Summary
   document.getElementById("group_violations").innerHTML      = evaluationResult.violations;
@@ -64,7 +51,9 @@ function updateGroupPanel(evaluationResult) {
 
   // Update Group Results
 
-  var ruleResults = evaluationResult.ruleResults;
+  ruleResults = evaluationResult.ruleResults;
+
+  groupGrid.clearRows();
 
   for (let i = 0; i < ruleResults.length; i++) {
     var rr = ruleResults[i];
@@ -85,8 +74,24 @@ function updateGroupPanel(evaluationResult) {
 */
 }
 
+
+function getDetailsAction(ruleResults, ruleId) {
+
+  var da = ruleResults[0].detailsAction;
+
+  for (let i = 0; i < ruleResults.length; i++) {
+    if (ruleResults[i].ruleId === ruleId) {
+      da = ruleResults[i].detailsAction;
+      return da;
+    }
+  }
+
+  return da;
+}
+
 function handleGroupGridAction(type, ruleId) {
 
+  var da;
 
   switch (type) {
     case 'activate':
@@ -94,6 +99,8 @@ function handleGroupGridAction(type, ruleId) {
       break;
 
     case 'click':
+      messageArgs.ruleId    = ruleId;
+      updateDetailsAction('rr', getDetailsAction(ruleResults, ruleId));
       break;
 
     case 'doubleClick':
@@ -101,9 +108,16 @@ function handleGroupGridAction(type, ruleId) {
 
     case 'focus':
       detailsRuleButton.disabled = false;
+      messageArgs.ruleId    = ruleId;
+      da = getDetailsAction(ruleResults, ruleId);
+      updateDetailsAction('rr', da);
       break;
 
   }
+};
+
+function setGroupPanelFocus() {
+  groupGrid.setSelectedToRowById(messageArgs.ruleId);
 };
 
 // Details Rule Button
