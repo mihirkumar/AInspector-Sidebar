@@ -243,6 +243,10 @@ var GridRow = function (domNode, grid, id, action, thead) {
 };
 
 GridRow.prototype.init = function () {
+  if (this.isThead && !this.grid.allowHeaderNavigation) {
+    this.domNode.tabindex = '';
+  }
+
   this.domNode.addEventListener('keydown',  this.handleKeydown.bind(this));
   this.domNode.addEventListener('click',    this.handleClick.bind(this));
   this.domNode.addEventListener('dblclick', this.handleDoubleClick.bind(this));

@@ -96,6 +96,7 @@ function handleGroupGridAction(type, ruleId) {
       break;
 
     case 'doubleClick':
+      handleGetRule(ruleId)
       break;
 
     case 'focus':
