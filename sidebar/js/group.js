@@ -53,6 +53,10 @@ function updateGroupPanel(evaluationResult) {
 
   ruleResults = evaluationResult.ruleResults;
 
+  ruleResults.sort(function (a, b) {
+    return b.resultValue - a.resultValue;
+  });
+
   groupGrid.clearRows();
 
   for (let i = 0; i < ruleResults.length; i++) {
@@ -60,18 +64,6 @@ function updateGroupPanel(evaluationResult) {
     addRuleResultRow(rr.ruleId, rr.summary, rr.result, rr.wcag, rr.level, rr.required);
   }
 
-/*
-  node.innerHTML = html;
-
-  var buttons = node.getElementsByTagName('a');
-
-  for (let i = 0; i < buttons.length; i++) {
-
-    buttons[i].addEventListener('click', function (event) {var ruleId = event.currentTarget.id; handleGetRule(ruleId);});
-    buttons[i].addEventListener('focus', function (event) {var da = getDetailsAction(ruleResults, event.currentTarget.id); updateDetailsAction('rr', da);});
-    buttons[i].addEventListener('mouseover', function (event) {var da = getDetailsAction(ruleResults, event.currentTarget.id); updateDetailsAction('rr', da);});
-  }
-*/
 }
 
 

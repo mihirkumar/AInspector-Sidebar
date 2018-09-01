@@ -160,13 +160,14 @@ function addGroupSummaryData(aiResponse, evaluationResult, groupType, groupId) {
 
     var ruleId = ruleResult.getRule().getId();
 
-    var item = { 'ruleId'   : ruleId,
-                 'summary'  : ruleResult.getRuleSummary(),
-                 'required' : ruleResult.isRuleRequired(),
-                 'wcag'     : ruleResult.getRule().getPrimarySuccessCriterion().id,
-                 'result'   : ruleResult.getResultValueNLS(),
-                 'level'    : ruleResult.getWCAG20LevelNLS(),
-                 'messages' : ruleResult.getResultMessagesArray(),
+    var item = { 'ruleId'        : ruleId,
+                 'summary'       : ruleResult.getRuleSummary(),
+                 'required'      : ruleResult.isRuleRequired(),
+                 'wcag'          : ruleResult.getRule().getPrimarySuccessCriterion().id,
+                 'result'        : ruleResult.getResultValueNLS(),
+                 'resultValue'   : ruleResult.getResultValue(),
+                 'level'         : ruleResult.getWCAG20LevelNLS(),
+                 'messages'      : ruleResult.getResultMessagesArray(),
                  'detailsAction' : getDetailsAction(evaluationResult, ruleId)
                };
 
@@ -271,6 +272,7 @@ function addRuleResultData(aiResponse, evaluationResult, ruleId) {
     var item = { 'element'       : elementResult.getElementIdentifier(),
                  'position'      : elementResult.getOrdinalPosition(),
                  'result'        : elementResult.getResultValueNLS(),
+                 'resultValue'   : elementResult.getResultValue(),
                  'actionMessage' : elementResult.getResultMessage()
                };
 

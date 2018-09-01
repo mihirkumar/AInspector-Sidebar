@@ -87,6 +87,10 @@ function updateRulePanel(evaluationResult) {
 
   ruleGrid.clearRows();
 
+  elementResults.sort(function (a, b) {
+    return b.resultValue - a.resultValue;
+  });
+
   for (let i = 0; i < elementResults.length; i++) {
     var er = elementResults[i];
     addElementResultRow(er.element, er.result, er.position, er.actionMessage);

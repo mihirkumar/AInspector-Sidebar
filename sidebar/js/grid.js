@@ -282,6 +282,8 @@ GridRow.prototype.addCell = function (content, type, sort, header) {
   gridCell.init();
   this.cells.push(gridCell);
 
+  return gridCell;
+
 };
 
 GridRow.prototype.addGridCell = function (gridCell) {
