@@ -77,11 +77,21 @@ function updateDetailsAction(id, detailsAction) {
     document.getElementById('rr_rule_selected').style.display = 'block';
   }
 
-}
+};
+
+function updateRulePanelSummaryResult(evaluationResult) {
+
+  document.getElementById('rule_panel_summary').innerHTML = evaluationResult.ruleResult.summary;
+  var node = document.getElementById('rule_panel_result');
+  node.innerHTML = evaluationResult.ruleResult.result;
+  node.className = 'right ' + evaluationResult.ruleResult.result.toLowerCase();
+};
 
 function updateRulePanel(evaluationResult) {
 
   updateDetailsAction('da', evaluationResult.detailsAction);
+
+  updateRulePanelSummaryResult(evaluationResult);
 
   var elementResults = evaluationResult.elementResults;
 

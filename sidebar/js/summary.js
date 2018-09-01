@@ -16,18 +16,18 @@ rcOptions.push({ 'id': 0x0800, 'label': 'Site Navigation'});
 rcOptions.push({ 'id': 0x0FFF, 'label': 'All'});
 
 var glOptions = [];
-glOptions.push({ 'id': 0x000010, 'label': 'Text Alternatives'});
-glOptions.push({ 'id': 0x000020, 'label': 'Time-based Media'});
-glOptions.push({ 'id': 0x000040, 'label': 'Adaptable'});
-glOptions.push({ 'id': 0x000080, 'label': 'Distinguishable'});
-glOptions.push({ 'id': 0x000100, 'label': 'Keyboard Accessible'});
-glOptions.push({ 'id': 0x000200, 'label': 'Enough Time'});
-glOptions.push({ 'id': 0x000400, 'label': 'Seizures'});
-glOptions.push({ 'id': 0x000800, 'label': 'Navigable'});
-glOptions.push({ 'id': 0x001000, 'label': 'Readable'});
-glOptions.push({ 'id': 0x002000, 'label': 'Predictable'});
-glOptions.push({ 'id': 0x004000, 'label': 'Input Assistance'});
-glOptions.push({ 'id': 0x010000, 'label': 'Compatible'});
+glOptions.push({ 'id': 0x000010, 'label': '1.1 Text Alternatives'});
+glOptions.push({ 'id': 0x000020, 'label': '1.2 Time-based Media'});
+glOptions.push({ 'id': 0x000040, 'label': '1.3 Adaptable'});
+glOptions.push({ 'id': 0x000080, 'label': '1.4 Distinguishable'});
+glOptions.push({ 'id': 0x000100, 'label': '2.1 Keyboard Accessible'});
+glOptions.push({ 'id': 0x000200, 'label': '2.2 Enough Time'});
+glOptions.push({ 'id': 0x000400, 'label': '2.3 Seizures'});
+glOptions.push({ 'id': 0x000800, 'label': '2.4 Navigable'});
+glOptions.push({ 'id': 0x001000, 'label': '3.1 Readable'});
+glOptions.push({ 'id': 0x002000, 'label': '3.2 Predictable'});
+glOptions.push({ 'id': 0x004000, 'label': '3.3 Input Assistance'});
+glOptions.push({ 'id': 0x010000, 'label': '4.1 Compatible'});
 glOptions.push({ 'id': 0x01FFF0, 'label': 'All'});
 
 function hideSummaryPanel() {

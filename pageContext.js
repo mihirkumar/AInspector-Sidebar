@@ -122,18 +122,18 @@ function addGuidelineData(aiResponse, evaluationResult) {
 
   aiResponse.glResults = [];
 
-  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_1, 'Text Alternatives');
-  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_2, 'Time-based Media');
-  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_3, 'Adaptable');
-  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_4, 'Distinguishable');
-  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_2_1, 'Keyboard Accessible' );
-  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_2_2, 'Enough Time');
-  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_2_3, 'Seizures');
-  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_2_4, 'Navigable');
-  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_3_1, 'Readable');
-  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_3_2, 'Predictable');
-  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_3_3, 'Input Assistance');
-  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_1, 'Compatible');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_1, '1.1 Text Alternatives');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_2, '1.2 Time-based Media');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_3, '1.3 Adaptable');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_1_4, '1.4 Distinguishable');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_2_1, '2.1 Keyboard Accessible' );
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_2_2, '2.2 Enough Time');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_2_3, '2.3 Seizures');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_2_4, '2.4 Navigable');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_3_1, '3.1 Readable');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_3_2, '3.2 Predictable');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_3_3, '3.3 Input Assistance');
+  addItem(OpenAjax.a11y.WCAG20_GUIDELINE.G_4_1, '4.1 Compatible');
 
   console.log('[addRuleCategoryData][End]');
 }
@@ -264,10 +264,9 @@ function getDetailsAction(evaluationResult, ruleId) {
 
 }
 
-function addRuleResultData(aiResponse, evaluationResult, ruleId) {
+function getElementResults(evaluationResult, ruleId) {
 
   function addElementResult(elementResult) {
-    console.log('[addRuleResultData][addElementResult]: ' + elementResult.getElementIdentifier());
 
     var item = { 'element'       : elementResult.getElementIdentifier(),
                  'position'      : elementResult.getOrdinalPosition(),
@@ -276,37 +275,65 @@ function addRuleResultData(aiResponse, evaluationResult, ruleId) {
                  'actionMessage' : elementResult.getResultMessage()
                };
 
-    aiResponse.elementResults.push(item);
+    elementResults.push(item);
 
   }
 
   console.log('[addRuleResultData][Start]: ' + ruleId);
 
+  var elementResults = [];
   var ruleResult     = evaluationResult.getRuleResult(ruleId);
 
-  var elementResults = ruleResult.getElementResultsArray();
+  var results = ruleResult.getElementResultsArray();
 
-  aiResponse.elementResults = []
-
-  for(let i = 0; i < elementResults.length; i++) {
-    addElementResult(elementResults[i]);
+  for(let i = 0; i < results.length; i++) {
+    addElementResult(results[i]);
   }
 
   console.log('[addRuleResultData][End]');
+  return elementResults;
+};
+
+function getRuleResult(evaluationResult, ruleId) {
+  console.log("[getRuleResult][start]");
+
+  var ruleResult = evaluationResult.getRuleResult(ruleId);
+  console.log("[getRuleResult][ruleResult]: " + ruleResult);
+
+  var ruleId = ruleResult.getRule().getId();
+  var rule   = ruleResult.getRule()
+
+  var item = { 'ruleId'        : ruleId,
+               'summary'       : ruleResult.getRuleSummary(),
+               'required'      : ruleResult.isRuleRequired(),
+               'wcag'          : ruleResult.getRule().getPrimarySuccessCriterion().id,
+               'result'        : ruleResult.getResultValueNLS(),
+               'category'      : rule.getCategoryInfo().title,
+               'guideline'     : rule.getGuidelineInfo().title,
+               'resultValue'   : ruleResult.getResultValue(),
+               'level'         : ruleResult.getWCAG20LevelNLS(),
+               'messages'      : ruleResult.getResultMessagesArray(),
+               'detailsAction' : getDetailsAction(evaluationResult, ruleId)
+             };
+
+  console.log("[getRuleResult][end]");
+  return item;
+
 }
 
 function rule(ruleset, ruleId) {
-  console.log('[rule][Start]:   ' + ruleId);
+  console.log("[rule][start]");
+
   var evaluationResult = evaluateRules(ruleset);
   var aiResponse  = getCommonData(evaluationResult);
 
-  aiResponse.detailsAction = getDetailsAction(evaluationResult, ruleId);
-  addRuleResultData(aiResponse, evaluationResult, ruleId);
   aiResponse.option = 'rule'
+  aiResponse.detailsAction  = getDetailsAction(evaluationResult, ruleId);
+  aiResponse.ruleResult     = getRuleResult(evaluationResult, ruleId);
+  aiResponse.elementResults = getElementResults(evaluationResult, ruleId);
 
-  console.log('[rule][URL]:     ' + aiResponse.url);
-  console.log('[rule][Ruleset]: ' + aiResponse.ruleset);
-  console.log('[rule][End]:     ');
+  console.log("[rule][end]");
+
   return aiResponse;
 }
 
@@ -342,7 +369,7 @@ browser.runtime.onMessage.addListener(request => {
       break;
 
     case 'rule':
-      console.log('[onMessage][ruleId]: ' + request.ruleId);
+      console.log('[onMessage][rule]: ' + request.ruleId);
       aiResponse = rule(ruleset, request.ruleId);
       break;
 

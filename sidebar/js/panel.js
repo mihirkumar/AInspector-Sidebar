@@ -61,7 +61,12 @@ function changePanelElements(evaluationResult) {
 
     case 'rule':
       show('rule_panel');
-      updateTitle('Rule Result');
+      if (evaluationResult.groupType = 'rc') {
+        updateTitle(evaluationResult.ruleResult.category);
+      }
+      else {
+        updateTitle(evaluationResult.ruleResult.guideline);
+      }
       updateRulePanel(evaluationResult);
       break;
 
@@ -132,16 +137,6 @@ function handleGetRule(ruleId, position) {
 
 // Add event handlers
 
-var messageArgs = {
-  option: 'summary',
-  ruleset: 'ARIA_STRICT',
-  groupType: 'rc',
-  groupId: 1,
-  rule: '',
-  position: -1,
-  highight: 'none'  // other options 'selected', 'v/w', 'mc' and 'all'
-};
-
 function sendMessageToTabs(tabs) {
   clearSummaryPanel();
   clearGroupPanel();
@@ -204,7 +199,15 @@ function handleBack(event) {
 var backButton = document.getElementById('back');
 backButton.addEventListener('click', handleBack);
 
-
+var messageArgs = {
+  option: 'summary',
+  ruleset: 'ARIA_STRICT',
+  groupType: 'rc',
+  groupId: 1,
+  rule: '',
+  position: -1,
+  highight: 'none'  // other options 'selected', 'v/w', 'mc' and 'all'
+};
 
 // Initialize panel
 

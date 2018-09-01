@@ -74,35 +74,54 @@ table.summary {
 }
 
 table.summary th,
-table.summary td {
+table.summary td,
+#rule_panel_result {
   padding: 0.5em;
   text-align: center;
-  width: 4em;
+  width: 50px;
+}
+
+#rule_panel_summary {
+  float: left;
+  width: 320px;
+  font-size: 1.20em;
+  font-weight: bold;
+}
+
+#rule_panel_rule {
+  padding-top: 1em;
+  padding-bottom: 2em;
 }
 
 #summary_violations,
 #group_violations,
-table.grid tbody td.v {
+table.grid tbody td.v,
+#rule_panel_result.v {
   background-color: #FFAEAE;
 }
 
 #summary_warnings,
 #group_warnings,
-table.grid tbody td.w {
+table.grid tbody td.w ,
+#rule_panel_result.w {
   background-color: #FFEC94;
 }
 
 #summary_manual_checks,
 #group_manual_checks,
-table.grid tbody td.mc {
+table.grid tbody td.mc,
+#rule_panel_result.mc  {
   background-color: #B4D8E7;
 }
 
 #summary_passed,
 #group_passed,
-table.grid tbody td.p  {
+table.grid tbody td.p,
+#rule_panel_result.p {
   background-color: #B0E57C;
 }
+
+
 
 table.grid {
   margin: 0;
@@ -201,8 +220,8 @@ table.categories tbody {
 
 table.categories thead th.category,
 table.categories tbody th.category {
-  width: 160px;
-  max-width: 160px;
+  width: 200px;
+  max-width: 200px;
 }
 
 table.categories tbody th.category {
@@ -211,8 +230,8 @@ table.categories tbody th.category {
 
 table.categories thead th.result,
 table.categories tbody td.result {
-  width: 60px;
-  max-width: 60px;
+  width: 50px;
+  max-width: 50px;
   padding-right:25px;
 }
 
