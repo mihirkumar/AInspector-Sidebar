@@ -16,7 +16,7 @@
     "commands": {
       "_execute_sidebar_action": {
         "suggested_key": {
-          "default": "Ctrl+Shift+Y"
+          "default": "Ctrl+Shift+Q"
         }
       }
     },
